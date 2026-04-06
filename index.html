@@ -624,6 +624,7 @@ textarea{font-size:16px !important}
       <div class="sort-bar"><span class="sort-lbl">Ordenar:</span><button class="sort-btn active" id="cred-sort-data" onclick="setCredSort('data')">📅 Data</button><button class="sort-btn" id="cred-sort-val-desc" onclick="setCredSort('val-desc')">💰 Maior valor</button><button class="sort-btn" id="cred-sort-val-asc" onclick="setCredSort('val-asc')">💰 Menor valor</button></div>
       <div class="multi-bar" id="cred-multi-bar"><span class="multi-bar-count" id="cred-sel-count">0 selecionados</span><button class="multi-bar-selall" onclick="selAllCred()">Tudo</button><button class="multi-bar-cancel" onclick="cancelMultiCred()">Cancelar</button><button class="multi-bar-del" onclick="delMultiCred()">🗑️ Excluir</button></div>
       <button class="multi-toggle-btn" id="cred-multi-btn" onclick="toggleMultiCred()" style="margin-bottom:8px">☑️ Selecionar múltiplos</button>
+      <div style="text-align:right;margin-bottom:8px"><button class="sort-btn" onclick="exportPDF('credito')" style="background:rgba(139,92,246,.12);color:var(--p2);border-color:rgba(139,92,246,.3);font-size:11px">📄 Exportar PDF do mês</button></div>
       <div class="scard"><div id="tx-cred"></div></div>
     </div>
 
@@ -666,6 +667,7 @@ textarea{font-size:16px !important}
       <div class="sort-bar"><span class="sort-lbl">Ordenar:</span><button class="sort-btn active" id="deb-sort-data" onclick="setDebSort('data')">📅 Data</button><button class="sort-btn" id="deb-sort-val-desc" onclick="setDebSort('val-desc')">💰 Maior valor</button><button class="sort-btn" id="deb-sort-val-asc" onclick="setDebSort('val-asc')">💰 Menor valor</button></div>
       <div class="multi-bar" id="deb-multi-bar"><span class="multi-bar-count" id="deb-sel-count">0 selecionados</span><button class="multi-bar-selall" onclick="selAllDeb()">Tudo</button><button class="multi-bar-cancel" onclick="cancelMultiDeb()">Cancelar</button><button class="multi-bar-del" onclick="delMultiDeb()">🗑️ Excluir</button></div>
       <button class="multi-toggle-btn" id="deb-multi-btn" onclick="toggleMultiDeb()" style="margin-bottom:8px">☑️ Selecionar múltiplos</button>
+      <div style="text-align:right;margin-bottom:8px"><button class="sort-btn" onclick="exportPDF('debito')" style="background:rgba(139,92,246,.12);color:var(--p2);border-color:rgba(139,92,246,.3);font-size:11px">📄 Exportar PDF do mês</button></div>
       <div class="scard"><div id="tx-deb"></div></div>
     </div>
 
@@ -1174,7 +1176,19 @@ var cats = L('gf2_cats', [
   {id:23, nome:'Presente',           emoji:'🎁', cor:'#e11d48', tipo:'ganho'},
   {id:24, nome:'Outros (ganhos)',    emoji:'💵', cor:'#059669', tipo:'ganho'},
   {id:25, nome:'Cashback',           emoji:'🔄', cor:'#0284c7', tipo:'ganho'},
-  {id:26, nome:'Receitas Variáveis', emoji:'📊', cor:'#7c3aed', tipo:'ganho'}
+  {id:26, nome:'Receitas Variáveis', emoji:'📊', cor:'#7c3aed', tipo:'ganho'},
+  {id:30, nome:'Delivery',          emoji:'🍔', cor:'#dc2626', tipo:'gasto'},
+  {id:31, nome:'Mercado',           emoji:'🛒', cor:'#f59e0b', tipo:'gasto'},
+  {id:32, nome:'Streaming',         emoji:'📺', cor:'#3b82f6', tipo:'gasto'},
+  {id:33, nome:'Apps',              emoji:'📱', cor:'#8b5cf6', tipo:'gasto'},
+  {id:34, nome:'Doações',           emoji:'❤️',  cor:'#e11d48', tipo:'gasto'},
+  {id:35, nome:'Presente',          emoji:'🎁', cor:'#f472b6', tipo:'gasto'},
+  {id:40, nome:'Reembolso',         emoji:'↩️',  cor:'#059669', tipo:'ganho'},
+  {id:41, nome:'Venda extra',       emoji:'🏷️',  cor:'#16a34a', tipo:'ganho'},
+  {id:42, nome:'Freelance',         emoji:'💻', cor:'#0284c7', tipo:'ganho'},
+  {id:43, nome:'Juros / Rendimentos',emoji:'📈', cor:'#0ea5e9', tipo:'ganho'},
+  {id:44, nome:'Dividendos',        emoji:'💹', cor:'#7c3aed', tipo:'ganho'},
+  {id:45, nome:'Restituição',       emoji:'🏛️',  cor:'#22c55e', tipo:'ganho'}
 ]);
 var usos = L('gf2_usos', [{id:1, nome:'Pessoal', fixo:true}]);
 var bizs    = L('gf2_bizs', []);
@@ -5413,8 +5427,8 @@ window.delCat = function() {
 // PATCH getCat — fallback to gasto default if needed
 // ══════════════════════════════════════════════════════
 window.getCat = function(id) {
-  if(!id) return {emoji:'\U0001f4b8',nome:'Outros (gastos)',cor:'#6b7280',tipo:'gasto'};
-  return cats.find(function(c){return String(c.id)===String(id);})||{emoji:'\U0001f4b8',nome:'Outros (gastos)',cor:'#6b7280',tipo:'gasto'};
+  if(!id) return {emoji:'💸',nome:'Outros (gastos)',cor:'#6b7280',tipo:'gasto'};
+  return cats.find(function(c){return String(c.id)===String(id);})||{emoji:'💸',nome:'Outros (gastos)',cor:'#6b7280',tipo:'gasto'};
 };
 
 // ══════════════════════════════════════════════════════
@@ -5469,7 +5483,7 @@ window.renderDebTab = function() {
       var cls=b.pago?'fb-paid':b.dias<=0?'fb-urg':b.dias<=3?'fb-urg':b.dias<=7?'fb-wrn':'fb-ok';
       var label=b.pago?'Pago':b.dias<=0?'Hoje':b.dias+'d';
       return '<div class="fatura-item">'+
-        '<div class="fat-ico" style="background:rgba(139,92,246,.12)">\U0001f4b3</div>'+
+        '<div class="fat-ico" style="background:rgba(139,92,246,.12)">💳</div>'+
         '<div class="fat-inf">'+
           '<div class="fat-name">'+b.card.banco+' \u2014 '+b.card.nome+'</div>'+
           '<div class="fat-date">Vence '+b.vencDate.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})+'</div>'+
@@ -5528,7 +5542,7 @@ window.renderDebTab = function() {
   var sorted=typeof applySort==='function'?applySort(filtAll,debSortMode):filtAll;
   var el2=getEl('tx-deb'); if(!el2) return;
   el2.innerHTML=sorted.length?sorted.map(function(t){return renderTxRow(Object.assign({},t,{origem:'debito'}));}).join(''):
-    '<div class="empty"><div class="big">\U0001f3e6</div><p>Nenhum lançamento neste período.</p></div>';
+    '<div class="empty"><div class="big">🏦</div><p>Nenhum lançamento neste período.</p></div>';
   if(typeof debMultiMode!=='undefined'&&debMultiMode&&typeof injectDebCheckboxes==='function') setTimeout(injectDebCheckboxes,0);
 };
 
@@ -5620,7 +5634,7 @@ window.renderTxRow = function(t) {
   if(t.isFaturaPag){
     var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'';
     return '<div class="tx-item">'+
-      '<div class="tx-ico" style="background:rgba(139,92,246,.12)">\U0001f4b3</div>'+
+      '<div class="tx-ico" style="background:rgba(139,92,246,.12)">💳</div>'+
       '<div class="tx-inf"><div class="tx-name">'+t.desc+'</div>'+
       '<div class="tx-meta"><span class="tx-badge badge-deb">D\u00e9bito</span>'+
         '<span class="tx-badge" style="background:rgba(139,92,246,.15);color:#c4b5fd">Pgto Fatura</span>'+
@@ -5641,7 +5655,7 @@ window.renderTxRow = function(t) {
   else if(isCofrinho) dirBadge=t.tipo==='entrada'?
     '<span class="tx-badge" style="background:rgba(245,158,11,.15);color:#fbbf24">\u2190 Resgate</span>':
     '<span class="tx-badge" style="background:rgba(139,92,246,.15);color:#c4b5fd">\u2192 Aplica\u00e7\u00e3o</span>';
-  else if(isTransfer) dirBadge='<span class="tx-badge" style="background:rgba(59,130,246,.15);color:#93c5fd">\U0001f504 Transf.</span>';
+  else if(isTransfer) dirBadge='<span class="tx-badge" style="background:rgba(59,130,246,.15);color:#93c5fd">🔄 Transf.</span>';
   else if(isPos) dirBadge='<span class="tx-badge badge-in">\u2191 Ganho</span>';
   else           dirBadge='<span class="tx-badge badge-out">\u2193 Gasto</span>';
   var paidBadge=t.pago&&!isEst?'<span class="tx-badge badge-paid">\u2713 Pago</span>':'';
@@ -5652,6 +5666,219 @@ window.renderTxRow = function(t) {
   var amtSign=isEst?'+':isPos?'+':'-';
   return '<div class="tx-item">'+
     '<div class="tx-ico" style="background:'+cat.cor+'20">'+(isEst?'\u21a9':cat.emoji)+'</div>'+
+    '<div class="tx-inf"><div class="tx-name">'+(isEst?'[ESTORNO] ':'')+t.desc+'</div>'+
+    '<div class="tx-meta">'+origemBadge+dirBadge+paidBadge+usoBadge+'<span>'+cat.nome+'</span></div></div>'+
+    '<div class="tx-right">'+
+    '<div class="tx-amt '+amtColor+'">'+amtSign+fmt(t.val)+'</div>'+
+    '<div class="tx-sub">'+d+' <span class="tx-edit" onclick="'+editFn+'">editar</span></div>'+
+    '</div></div>';
+};
+
+
+// ══════════════════════════════════════════════════════
+// v15 — FIX 1: getCat — clean fallback, no unicode escapes
+// ══════════════════════════════════════════════════════
+window.getCat = function(id) {
+  if(!id) return {emoji:'💸',nome:'Outros (gastos)',cor:'#6b7280',tipo:'gasto'};
+  return cats.find(function(c){return String(c.id)===String(id);})||{emoji:'💸',nome:'Outros (gastos)',cor:'#6b7280',tipo:'gasto'};
+};
+
+// ══════════════════════════════════════════════════════
+// v15 — FIX 3: delDeb — sync cofrinho when deleting aplicacao/resgate
+// ══════════════════════════════════════════════════════
+var _origDelDeb_v15 = window.delDeb;
+window.delDeb = function() {
+  var id = parseInt(getEl('deb-edit-id').value);
+  if(!id){alert('Erro: ID não encontrado.');return;}
+  if(!confirm('Remover este lançamento?')) return;
+  var tx = debTxs.find(function(t){return t.id===id;});
+  // Sync cofrinho if this is an aplicacao or resgate
+  if(tx && tx.isCofrinho) {
+    // Find matching cofrinho entry (same val, close date)
+    var cofreTipo = tx.tipo==='saida' ? 'deposito' : 'resgate';
+    var matchIdx = -1;
+    cofreTxs.forEach(function(c,i){
+      if(matchIdx===-1 && c.tipo===cofreTipo && Math.abs(c.val-tx.val)<0.01) matchIdx=i;
+    });
+    if(matchIdx>=0) cofreTxs.splice(matchIdx,1);
+    S('gf2_cofre',cofreTxs);
+  }
+  debTxs = debTxs.filter(function(t){return t.id!==id;});
+  S('gf2_deb',debTxs);
+  closeM('m-deb');
+  renderAll();
+};
+
+// ══════════════════════════════════════════════════════
+// v15 — FIX 4: buildCatSel — always filter by tipo context
+// ══════════════════════════════════════════════════════
+window.buildCatSel = function(selId, tipoCtx) {
+  var el=getEl(selId); if(!el) return;
+  var cur=el.value;
+  var list;
+  if(tipoCtx==='ganho') list=cats.filter(function(c){return c.tipo==='ganho';});
+  else if(tipoCtx==='gasto') list=cats.filter(function(c){return c.tipo==='gasto'||!c.tipo;});
+  else list=cats;
+  el.innerHTML='<option value="">— Categoria —</option>'+
+    list.map(function(c){return '<option value="'+c.id+'">'+c.emoji+' '+c.nome+'</option>';}).join('');
+  if(cur) el.value=cur;
+};
+
+// ══════════════════════════════════════════════════════
+// v15 — FIX 4: onDebTipoChange — filter cats correctly
+// ══════════════════════════════════════════════════════
+window.onDebTipoChange = function() {
+  var tipoEl=getEl('deb-tipo-sel');
+  var tipo=tipoEl?tipoEl.value:'saida';
+  var cofreRow=getEl('deb-cofre-tipo-row'); if(cofreRow) cofreRow.style.display=(tipo==='aplicacao')?'block':'none';
+  var transfRow=getEl('deb-transf-row');    if(transfRow) transfRow.style.display=(tipo==='transferencia')?'block':'none';
+  var isGanho=(tipo==='entrada'||tipo==='resgate');
+  buildCatSel('deb-cat', isGanho?'ganho':'gasto');
+  curDebType=isGanho?'entrada':'saida';
+};
+
+// ══════════════════════════════════════════════════════
+// v15 — FIX 4: openCredModal — always show gasto cats for credit
+// ══════════════════════════════════════════════════════
+var _origOpenCredModal_v15 = window.openCredModal;
+window.openCredModal = function() {
+  if(typeof _origOpenCredModal_v15==='function') _origOpenCredModal_v15();
+  setTimeout(function(){ buildCatSel('cred-cat','gasto'); },10);
+};
+
+// ══════════════════════════════════════════════════════
+// v15 — FIX 2: exportPDF — generate PDF for débito or crédito
+// ══════════════════════════════════════════════════════
+function exportPDF(aba) {
+  var now = new Date();
+  var m = now.getMonth(), y = now.getFullYear();
+  var mesNome = MONTHS[m]+' '+y;
+  var lines = [];
+
+  // ── Inline minimal PDF builder (using printable HTML + window.print) ──
+  var css = [
+    'body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#fff;color:#111}',
+    '.logo{font-size:28px;font-weight:900;color:#8b5cf6;letter-spacing:-1px;margin-bottom:4px}',
+    '.periodo{font-size:13px;color:#666;margin-bottom:20px}',
+    '.titulo{font-size:16px;font-weight:700;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #8b5cf6}',
+    'table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px}',
+    'th{background:#8b5cf6;color:#fff;padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px}',
+    'td{padding:7px 10px;border-bottom:1px solid #eee}',
+    'tr:nth-child(even) td{background:#f9f7ff}',
+    '.pos{color:#16a34a;font-weight:600}',
+    '.neg{color:#dc2626;font-weight:600}',
+    '.resumo{background:#f5f3ff;border-radius:8px;padding:14px 18px;margin-top:10px}',
+    '.resumo-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}',
+    '.resumo-total{font-weight:700;font-size:15px;border-top:1px solid #c4b5fd;margin-top:6px;padding-top:8px}',
+    '@media print{body{margin:0;padding:10px}}'
+  ].join('\n');
+
+  var tableHTML = '', resumoHTML = '';
+
+  if(aba==='debito') {
+    var txs = filterByMonthYear(debTxs, m, y)
+      .filter(function(t){return !t.isCofrinho&&!t.isTransfer;})
+      .sort(function(a,b){return (a.data||'').localeCompare(b.data||'');});
+    var totalGanho=txs.filter(function(t){return t.tipo==='entrada';}).reduce(function(a,t){return a+t.val;},0);
+    var totalGasto=txs.filter(function(t){return t.tipo==='saida'&&t.pago;}).reduce(function(a,t){return a+t.val;},0);
+    var saldo=totalGanho-totalGasto;
+
+    tableHTML='<table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Valor</th></tr></thead><tbody>'+
+      txs.map(function(t){
+        var cat=getCat(t.cat);
+        var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}):'—';
+        var tipo=t.tipo==='entrada'?'Ganho':'Gasto';
+        var cls=t.tipo==='entrada'?'pos':'neg';
+        var sign=t.tipo==='entrada'?'+':'-';
+        return '<tr><td>'+d+'</td><td>'+t.desc+'</td><td>'+cat.emoji+' '+cat.nome+'</td><td>'+tipo+'</td><td class="'+cls+'">'+sign+'R$ '+Math.abs(t.val).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td></tr>';
+      }).join('')+
+    '</tbody></table>';
+    resumoHTML='<div class="resumo">'+
+      '<div class="resumo-row"><span>Total de Ganhos</span><span class="pos">+R$ '+totalGanho.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span></div>'+
+      '<div class="resumo-row"><span>Total de Gastos</span><span class="neg">-R$ '+totalGasto.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span></div>'+
+      '<div class="resumo-row resumo-total"><span>Saldo Final</span><span class="'+(saldo>=0?'pos':'neg')+'">'+(saldo>=0?'+':'-')+'R$ '+Math.abs(saldo).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span></div>'+
+    '</div>';
+
+  } else if(aba==='credito') {
+    var txsCred = filterByMonthYear(credTxs, m, y)
+      .sort(function(a,b){return (a.data||'').localeCompare(b.data||'');});
+    var totalGastos=txsCred.filter(function(t){return !t.estornado&&t.tipo!=='estorno';}).reduce(function(a,t){return a+t.val;},0);
+    var totalEstorno=txsCred.filter(function(t){return t.estornado||t.tipo==='estorno';}).reduce(function(a,t){return a+t.val;},0);
+    var totalFatura=Math.max(0,totalGastos-totalEstorno);
+
+    tableHTML='<table><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th><th>Tipo</th></tr></thead><tbody>'+
+      txsCred.map(function(t){
+        var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}):'—';
+        var isEst=t.estornado||t.tipo==='estorno';
+        var tipo=isEst?'Estorno':'Gasto';
+        var cls=isEst?'pos':'neg';
+        var sign=isEst?'+':'-';
+        return '<tr><td>'+d+'</td><td>'+(isEst?'[Estorno] ':'')+t.desc+'</td><td class="'+cls+'">'+sign+'R$ '+Math.abs(t.val).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td>'+tipo+'</td></tr>';
+      }).join('')+
+    '</tbody></table>';
+    resumoHTML='<div class="resumo">'+
+      '<div class="resumo-row"><span>Total de Gastos</span><span class="neg">R$ '+totalGastos.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span></div>'+
+      '<div class="resumo-row"><span>Total de Estornos</span><span class="pos">+R$ '+totalEstorno.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span></div>'+
+      '<div class="resumo-row resumo-total"><span>Total da Fatura</span><span class="neg">R$ '+totalFatura.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span></div>'+
+    '</div>';
+  }
+
+  var tituloAba = aba==='debito'?'Relatório de Débito':'Fatura de Crédito';
+  var bodyHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin — '+tituloAba+'</title><style>'+css+'</style></head><body>'+
+    '<div class="logo">gabi.fin</div>'+
+    '<div class="periodo">'+tituloAba+' · '+mesNome+'</div>'+
+    '<div class="titulo">Lançamentos</div>'+
+    tableHTML+
+    '<div class="titulo">Resumo</div>'+
+    resumoHTML+
+    '<script>window.onload=function(){window.print();}<\/script>'+
+  '</body></html>';
+
+  var win=window.open('','_blank');
+  if(!win){alert('Permita pop-ups para exportar o PDF.');return;}
+  win.document.write(bodyHTML);
+  win.document.close();
+}
+
+// ══════════════════════════════════════════════════════
+// v15 — FIX: renderTxRow clean version (no unicode escapes)
+// ══════════════════════════════════════════════════════
+window.renderTxRow = function(t) {
+  if(t.isFaturaPag){
+    var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'';
+    return '<div class="tx-item">'+
+      '<div class="tx-ico" style="background:rgba(139,92,246,.12)">💳</div>'+
+      '<div class="tx-inf"><div class="tx-name">'+t.desc+'</div>'+
+      '<div class="tx-meta"><span class="tx-badge badge-deb">Débito</span>'+
+        '<span class="tx-badge" style="background:rgba(139,92,246,.15);color:#c4b5fd">Pgto Fatura</span>'+
+        '<span class="tx-badge badge-paid">✓ Pago</span></div></div>'+
+      '<div class="tx-right"><div class="tx-amt amt-neg">-'+fmt(t.val)+'</div>'+
+      '<div class="tx-sub">'+d+' <span class="tx-edit" onclick="editDeb('+t.id+')">editar</span></div>'+
+      '</div></div>';
+  }
+  var cat=getCat(t.cat);
+  var isPos=t.tipo==='entrada';
+  var isCred=t.origem==='credito';
+  var isEst=t.estornado||t.tipo==='estorno';
+  var isCofrinho=t.isCofrinho, isTransfer=t.isTransfer;
+  var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'';
+  var origemBadge=isCred?'<span class="tx-badge badge-cred">Crédito</span>':'<span class="tx-badge badge-deb">Débito</span>';
+  var dirBadge;
+  if(isEst)       dirBadge='<span class="tx-badge" style="background:rgba(245,158,11,.15);color:#fbbf24">↩ Estorno</span>';
+  else if(isCofrinho) dirBadge=t.tipo==='entrada'?
+    '<span class="tx-badge" style="background:rgba(245,158,11,.15);color:#fbbf24">← Resgate</span>':
+    '<span class="tx-badge" style="background:rgba(139,92,246,.15);color:#c4b5fd">→ Aplicação</span>';
+  else if(isTransfer) dirBadge='<span class="tx-badge" style="background:rgba(59,130,246,.15);color:#93c5fd">🔄 Transf.</span>';
+  else if(isPos)  dirBadge='<span class="tx-badge badge-in">↑ Ganho</span>';
+  else            dirBadge='<span class="tx-badge badge-out">↓ Gasto</span>';
+  var paidBadge=t.pago&&!isEst?'<span class="tx-badge badge-paid">✓ Pago</span>':'';
+  var uso=getUso(t.uso);
+  var usoBadge=uso?'<span class="tx-badge badge-uso">'+uso.nome+'</span>':'';
+  var editFn=isCred?'editCred('+t.id+')':'editDeb('+t.id+')';
+  var amtColor=isEst?'amt-pos':isPos?'amt-pos':'amt-neg';
+  var amtSign=isEst?'+':isPos?'+':'-';
+  return '<div class="tx-item">'+
+    '<div class="tx-ico" style="background:'+cat.cor+'20">'+(isEst?'↩':cat.emoji)+'</div>'+
     '<div class="tx-inf"><div class="tx-name">'+(isEst?'[ESTORNO] ':'')+t.desc+'</div>'+
     '<div class="tx-meta">'+origemBadge+dirBadge+paidBadge+usoBadge+'<span>'+cat.nome+'</span></div></div>'+
     '<div class="tx-right">'+
