@@ -548,12 +548,11 @@ textarea{font-size:16px !important}
 
     <!-- ══ INÍCIO ══ -->
     <div class="tab active" id="tab-inicio">
-      <div class="hdr" style="align-items:center;padding:12px 0 8px">
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-1.5px;line-height:1;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px">gabi.fin</div>
-          <div style="font-size:11px;color:var(--text2);margin-bottom:1px">Olá,</div>
-          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;line-height:1.2">
-            <span id="hdr-nome-inicio" style="color:#f1f0ff;-webkit-text-fill-color:#f1f0ff;background:none"></span>&#32;<span id="hdr-sobrenome-inicio" style="background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"></span>&#32;<span style="color:var(--text);-webkit-text-fill-color:var(--text);background:none">👋</span>
+      <div class="hdr" style="justify-content:center;padding:14px 0 8px">
+        <div style="text-align:center">
+          <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-2px;line-height:1;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">gabi.fin</div>
+          <div style="font-size:13px;color:var(--text2);margin-top:3px">
+            Olá, <span id="hdr-nome-inicio" style="color:#f1f0ff;-webkit-text-fill-color:#f1f0ff;background:none;font-weight:600"></span>&#32;<span id="hdr-sobrenome-inicio" style="background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600"></span> 👋
           </div>
         </div>
       </div>
@@ -565,7 +564,6 @@ textarea{font-size:16px !important}
       <div class="bal-hero">
         <div class="bal-lbl">Saldo disponível</div>
         <div class="bal-val pos" id="h-saldo">R$ 0,00</div>
-        <div class="bal-sub" id="h-sub">Nenhum lançamento ainda</div>
         <div class="health-wrap">
           <div class="health-row">
             <div class="health-lbl">Saúde financeira</div>
@@ -593,7 +591,7 @@ textarea{font-size:16px !important}
     <!-- ══ CRÉDITO ══ -->
     <div class="tab" id="tab-credito">
       <div class="hdr">
-        <div><div class="hdr-greet">Aba</div><div class="hdr-name"><span class="tab-name-gradient">Crédito</span></div></div>
+        <div><div class="hdr-name"><span class="tab-name-gradient">Crédito</span></div></div>
         <div class="hdr-right"><div class="hdr-btn add-btn" onclick="openCredModal()">＋</div></div>
       </div>
 
@@ -618,6 +616,12 @@ textarea{font-size:16px !important}
       <div id="fat-cred"></div>
 
       <div class="slbl" style="margin-top:14px">Lançamentos no crédito</div>
+      <div class="sort-bar" style="margin-bottom:8px">
+        <span class="sort-lbl">Cartão:</span>
+        <select class="fsel" id="cred-card-filter" onchange="renderCredTab()" style="flex:1;padding:5px 10px;font-size:13px;height:36px">
+          <option value="">Todos os cartões</option>
+        </select>
+      </div>
       <div class="period-picker" id="cred-period-picker">
         <div class="period-nav" onclick="shiftCredPeriod(-1)">‹</div>
         <select id="cred-day-sel" onchange="renderCredTab()" style="width:50px;flex:0.6"><option value="0">Todos os dias</option></select>
@@ -641,8 +645,16 @@ textarea{font-size:16px !important}
     <!-- ══ DÉBITO ══ -->
     <div class="tab" id="tab-debito">
       <div class="hdr">
-        <div><div class="hdr-greet">Aba</div><div class="hdr-name"><span class="tab-name-gradient">Débito</span></div></div>
+        <div><div class="hdr-name"><span class="tab-name-gradient">Débito</span></div></div>
         <div class="hdr-right"><div class="hdr-btn add-btn" onclick="openDebModal()">＋</div></div>
+      </div>
+
+      <!-- FILTRO BANCO -->
+      <div class="sort-bar" style="margin-bottom:10px">
+        <span class="sort-lbl">Conta:</span>
+        <select class="fsel" id="deb-banco-filter" onchange="renderDebTab()" style="flex:1;padding:5px 10px;font-size:13px;height:36px">
+          <option value="">Todas as contas</option>
+        </select>
       </div>
 
       <!-- RESUMO DÉBITO -->
@@ -680,12 +692,14 @@ textarea{font-size:16px !important}
       <div class="multi-bar" id="deb-multi-bar"><span class="multi-bar-count" id="deb-sel-count">0 selecionados</span><button class="multi-bar-selall" onclick="selAllDeb()">Tudo</button><button class="multi-bar-cancel" onclick="cancelMultiDeb()">Cancelar</button><button class="multi-bar-del" onclick="delMultiDeb()">🗑️ Excluir</button></div>
       <button class="multi-toggle-btn" id="deb-multi-btn" onclick="toggleMultiDeb()" style="margin-bottom:8px">☑️ Selecionar múltiplos</button>
       <div style="text-align:right;margin-bottom:8px"><button class="sort-btn" onclick="exportPDF('debito')" style="background:rgba(139,92,246,.12);color:var(--p2);border-color:rgba(139,92,246,.3);font-size:11px">📄 Exportar PDF do mês</button></div>
+      <!-- SALDO POR DIA -->
+      <div id="deb-saldo-dias" style="margin-bottom:4px"></div>
       <div class="scard"><div id="tx-deb"></div></div>
     </div>
 
     <!-- ══ ANÁLISES ══ -->
     <div class="tab" id="tab-analises">
-      <div class="hdr"><div><div class="hdr-greet">Minhas</div><div class="hdr-name"><span class="tab-name-gradient">Análises</span></div></div></div>
+      <div class="hdr"><div><div class="hdr-name"><span class="tab-name-gradient">Análises</span></div></div></div>
       <div class="sort-bar" style="margin-bottom:10px">
         <span class="sort-lbl">Uso:</span>
         <select class="fsel" id="anal-uso-filter" onchange="renderCharts()" style="flex:1;padding:5px 10px;font-size:13px;height:36px">
@@ -778,7 +792,7 @@ textarea{font-size:16px !important}
     <!-- ══ COFRINHO ══ -->
     <div class="tab" id="tab-cofrinho">
       <div class="hdr">
-        <div><div class="hdr-greet">Meu</div><div class="hdr-name"><span>Cofrinho</span> 🪙</div></div>
+        <div><div class="hdr-name"><span class="tab-name-gradient">Cofrinho</span> 🪙</div></div>
         <div class="hdr-right"><div class="hdr-btn add-btn" onclick="openCofreModal()">＋</div></div>
       </div>
 
@@ -802,7 +816,7 @@ textarea{font-size:16px !important}
     <!-- ══ CONFIGURAÇÕES ══ -->
     <div class="tab" id="tab-config">
       <div class="hdr">
-        <div><div class="hdr-greet">Minhas</div><div class="hdr-name"><span class="tab-name-gradient">Configurações</span></div></div>
+        <div><div class="hdr-name"><span class="tab-name-gradient">Configurações</span></div></div>
       </div>
 
       <div class="cfg-section">
@@ -6841,6 +6855,438 @@ window.processCSV = function(text) {
 document.addEventListener('DOMContentLoaded', function(){
   setTimeout(buildCatFilters, 500);
 });
+
+
+// ══════════════════════════════════════════════════════════════
+// v19 PATCHES
+// ══════════════════════════════════════════════════════════════
+
+// ── v19.1 — delDeb: sync cofrinho on delete ───────────────────
+window.delDeb = function() {
+  var id = parseInt(getEl('deb-edit-id').value);
+  if(!id){alert('Erro: ID não encontrado.');return;}
+  if(!confirm('Remover este lançamento?')) return;
+  var tx = debTxs.find(function(t){return t.id===id;});
+  // Sync cofrinho if aplicacao or resgate
+  if(tx && tx.isCofrinho) {
+    var targetTipo = tx.tipo==='saida' ? 'deposito' : 'resgate';
+    // Find first matching cofrinho entry (same approx val)
+    var idx = -1;
+    for(var i=0;i<cofreTxs.length;i++){
+      if(cofreTxs[i].tipo===targetTipo && Math.abs(cofreTxs[i].val-tx.val)<0.01){
+        idx=i; break;
+      }
+    }
+    if(idx>=0){ cofreTxs.splice(idx,1); S('gf2_cofre',cofreTxs); }
+  }
+  debTxs = debTxs.filter(function(t){return t.id!==id;});
+  S('gf2_deb',debTxs);
+  closeM('m-deb');
+  renderAll();
+};
+
+// ── v19.2 — confirmarPagamentoFatura: liberates credit limit ──
+window.confirmarPagamentoFatura = function() {
+  var bancoId  = getEl('pf-banco')?getEl('pf-banco').value:'';
+  var dataPag  = getEl('pf-data')?getEl('pf-data').value:'';
+  var valTotal = parseFloat(getEl('pf-valor-total')?getEl('pf-valor-total').value:0);
+  var cardId   = getEl('pf-card-id')?getEl('pf-card-id').value:'';
+  var vencM    = parseInt(getEl('pf-venc-m')?getEl('pf-venc-m').value:0);
+  var vencY    = parseInt(getEl('pf-venc-y')?getEl('pf-venc-y').value:0);
+  if(!dataPag){alert('Informe a data do pagamento.');return;}
+  if(!bancoId){alert('Selecione a conta de débito.');return;}
+  var card=cards.find(function(c){return String(c.id)===String(cardId);});
+  var catFat=cats.find(function(c){return c.nome.toLowerCase().includes('fatura')||c.nome.toLowerCase().includes('d\u00edvida');});
+  var catId=catFat?catFat.id:17;
+  // Mark cred txs as pago for this period
+  credTxs = credTxs.map(function(t){
+    if(String(t.cartao)===String(cardId) && parseInt(t.venc)===vencM && parseInt(t.anoVenc)===vencY && !t.estornado && t.tipo!=='estorno') {
+      return Object.assign({},t,{pago:true});
+    }
+    return t;
+  });
+  S('gf2_cred',credTxs);
+  // Create debit entry
+  debTxs.unshift({
+    id:Date.now(),tipo:'saida',origem:'debito',
+    desc:'Pagamento fatura '+(card?card.nome:'cartão'),
+    val:valTotal,cat:catId,uso:'',bancoId:bancoId,
+    data:dataPag,recorrencia:'unica',pago:true,
+    isFaturaPag:true,cartaoRef:cardId,vencFatM:vencM,vencFatY:vencY
+  });
+  S('gf2_deb',debTxs);
+  closeM('m-pagar-fatura');
+  renderAll();
+  // After render, explicitly refresh the credit limit bar to show freed-up limit
+  setTimeout(function(){
+    // recalc limit: only unpaid non-estorno txs count against limit
+    var unpaid = credTxs.filter(function(t){
+      return String(t.cartao)===String(cardId) && !t.pago && !t.estornado && t.tipo!=='estorno';
+    }).reduce(function(a,t){return a+t.val;},0);
+    var cardObj = cards.find(function(c){return String(c.id)===String(cardId);});
+    if(cardObj && cardObj.limite>0){
+      var pct=Math.min(100,Math.round(unpaid/cardObj.limite*100));
+      var e;
+      if((e=getEl('lim-used'))) e.textContent=fmt(unpaid);
+      if((e=getEl('lim-disp'))) e.textContent=fmt(cardObj.limite-unpaid);
+      if((e=getEl('lim-pct')))  e.textContent=pct+'%';
+      if((e=getEl('lim-fill'))) e.style.width=pct+'%';
+    }
+    alert('\u2705 Pagamento registrado!\n\nFatura paga: '+fmt(valTotal)+'\nLimite liberado!');
+  },200);
+};
+
+// ── v19.3 — buildBancoFilter ──────────────────────────────────
+function buildBancoFilter() {
+  var sel=getEl('deb-banco-filter'); if(!sel) return;
+  var cur=sel.value;
+  sel.innerHTML='<option value="">Todas as contas</option>'+
+    bancos.map(function(b){return '<option value="'+b.id+'">'+b.nome+'</option>';}).join('');
+  if(cur) sel.value=cur;
+}
+
+// ── v19.3 — buildCardFilter ───────────────────────────────────
+function buildCardFilter() {
+  var sel=getEl('cred-card-filter'); if(!sel) return;
+  var cur=sel.value;
+  sel.innerHTML='<option value="">Todos os cartões</option>'+
+    cards.map(function(c){return '<option value="'+c.id+'">'+c.nome+' ••••'+c.final+'</option>';}).join('');
+  if(cur) sel.value=cur;
+}
+
+// ── v19.5 — renderDailySaldo ──────────────────────────────────
+function renderDailySaldo(txList, bancoFilter) {
+  var wrap = getEl('deb-saldo-dias'); if(!wrap) return;
+  if(!txList.length){wrap.innerHTML='';return;}
+
+  // Compute saldo inicial: sum of all saldo inicial entries for the banco (all time before period)
+  var debPer = getPickerPeriod('deb-month-sel','deb-year-sel');
+  var periodStart = new Date(debPer.y, debPer.m, 1);
+
+  var allBancoTxs = debTxs.filter(function(t){
+    return (!bancoFilter||String(t.bancoId)===bancoFilter);
+  });
+
+  // saldo before period = all txs with date < period start
+  var saldoInicial = allBancoTxs.filter(function(t){
+    if(!t.data) return false;
+    var d = new Date(t.data+'T12:00');
+    return d < periodStart;
+  }).reduce(function(a,t){
+    if(t.tipo==='entrada'&&!t.isCofrinho&&!t.isTransfer) return a+t.val;
+    if(t.tipo==='saida'&&t.pago&&!t.isCofrinho&&!t.isTransfer) return a-t.val;
+    return a;
+  },0);
+
+  // Group txs in period by day
+  var byDay = {};
+  txList.filter(function(t){return !t.isCofrinho&&!t.isTransfer;}).forEach(function(t){
+    if(!t.data) return;
+    var d = t.data.slice(0,10);
+    if(!byDay[d]) byDay[d]=[];
+    byDay[d].push(t);
+  });
+  var days = Object.keys(byDay).sort();
+  if(!days.length){wrap.innerHTML='';return;}
+
+  var saldo = saldoInicial;
+  var rows = days.map(function(d){
+    var ents=byDay[d].filter(function(t){return t.tipo==='entrada';}).reduce(function(a,t){return a+t.val;},0);
+    var saids=byDay[d].filter(function(t){return t.tipo==='saida'&&t.pago;}).reduce(function(a,t){return a+t.val;},0);
+    saldo = saldo + ents - saids;
+    var dFmt=new Date(d+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+    var saldoCls=saldo>=0?'color:var(--green)':'color:var(--red)';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 12px;background:var(--bg3);border-radius:var(--rsm);margin-bottom:4px;font-size:12px">'+
+      '<span style="color:var(--text2)">'+dFmt+'</span>'+
+      (ents>0?'<span style="color:var(--green)">+'+fmt(ents)+'</span>':'')+
+      (saids>0?'<span style="color:var(--red)">−'+fmt(saids)+'</span>':'')+
+      '<span style="font-weight:600;'+saldoCls+'">'+fmt(saldo)+'</span>'+
+    '</div>';
+  });
+  // Month total
+  var monthEnt=txList.filter(function(t){return t.tipo==='entrada'&&!t.isCofrinho&&!t.isTransfer;}).reduce(function(a,t){return a+t.val;},0);
+  var monthSai=txList.filter(function(t){return t.tipo==='saida'&&t.pago&&!t.isCofrinho&&!t.isTransfer;}).reduce(function(a,t){return a+t.val;},0);
+  var monthSaldo = saldo; // last day saldo = month end saldo
+  var monthCls=monthSaldo>=0?'color:var(--green)':'color:var(--red)';
+  rows.push('<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:var(--bg4);border-radius:var(--rsm);margin-top:4px;border:.5px solid var(--border2)">'+
+    '<span style="font-weight:600;font-size:12px;color:var(--text)">Saldo do mês</span>'+
+    '<div style="display:flex;gap:10px;align-items:center">'+
+    '<span style="font-size:11px;color:var(--green)">+'+fmt(monthEnt)+'</span>'+
+    '<span style="font-size:11px;color:var(--red)">−'+fmt(monthSai)+'</span>'+
+    '<span style="font-weight:700;font-size:13px;'+monthCls+'">'+fmt(monthSaldo)+'</span>'+
+    '</div></div>');
+  wrap.innerHTML = rows.join('');
+}
+
+// ── v19 — renderDebTab: full version with banco filter, saldo por dia ──
+window.renderDebTab = function() {
+  buildBancoFilter();
+  buildCatFilters();
+  debPeriod=getPickerPeriod('deb-month-sel','deb-year-sel');
+  var dayEl=getEl('deb-day-sel'); var day=dayEl?parseInt(dayEl.value):0;
+  var bancoFilterEl=getEl('deb-banco-filter'); var bancoFilter=bancoFilterEl?bancoFilterEl.value:'';
+  if(bancoFilter&&bancoFilterEl) bancoFilterEl.value=bancoFilter;
+
+  var search  =(getEl('deb-search')   ?getEl('deb-search').value.trim().toLowerCase():'');
+  var catFilt =(getEl('deb-cat-filter')?getEl('deb-cat-filter').value:'');
+  var valMin  =parseFloat(getEl('deb-val-min')?getEl('deb-val-min').value:'')||0;
+  var valMax  =parseFloat(getEl('deb-val-max')?getEl('deb-val-max').value:'')||Infinity;
+
+  function isPersonal(t){return !t.isCofrinho&&!t.isTransfer;}
+
+  // ── Contas a vencer ──
+  var fatEl=getEl('fat-deb');
+  if(fatEl){
+    var upcoming=debTxs.filter(function(t){
+        return t.tipo==='saida'&&!t.pago&&t.data&&isPersonal(t)&&!t.isFaturaPag&&
+               (!bancoFilter||String(t.bancoId)===bancoFilter);
+      }).map(function(t){return Object.assign({},t,{dias:daysUntil(t.data)});})
+        .sort(function(a,b){return a.dias-b.dias;});
+    fatEl.innerHTML=upcoming.length?upcoming.slice(0,10).map(function(c){
+      var cls=c.dias<=0?'fb-urg':c.dias<=3?'fb-urg':c.dias<=7?'fb-wrn':'fb-ok';
+      var bg=c.dias<=3?'rgba(239,68,68,.12)':c.dias<=7?'rgba(245,158,11,.12)':'rgba(34,197,94,.12)';
+      var cat=getCat(c.cat);
+      return '<div class="fatura-item'+(c.dias<0?' atrasada':'')+'">'+
+        '<div class="fat-ico" style="background:'+bg+'">'+cat.emoji+'</div>'+
+        '<div class="fat-inf"><div class="fat-name">'+c.desc+'</div>'+
+        '<div class="fat-date">'+(c.data?new Date(c.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'')+
+        (c.recorrencia==='mensal'?' · Mensal':'')+'</div></div>'+
+        '<div class="fat-right"><div class="fat-val">'+fmt(c.val)+'</div>'+
+        '<div class="fat-badge '+cls+'">'+(c.dias<=0?'Vencida':c.dias+'d')+'</div>'+
+        '<div class="fat-actions">'+
+          '<div class="fat-checkbox'+(c.pago?' checked':'')+'" onclick="marcarPago('+c.id+')">✓</div>'+
+          '<button class="fat-act-btn btn-editar" onclick="editDeb('+c.id+')">editar</button>'+
+        '</div></div></div>';
+    }).join(''):'<div class="empty"><div class="big">✅</div><p>Nenhuma conta a vencer.</p></div>';
+  }
+
+  // ── All txs for the period (for stats + saldo) ──
+  var allPeriod=filterByMonthYear(debTxs,debPeriod.m,debPeriod.y).filter(function(t){
+    return (!bancoFilter||String(t.bancoId)===bancoFilter);
+  });
+
+  // ── Stats ──
+  var filtEnt=allPeriod.filter(function(t){return t.tipo==='entrada'&&isPersonal(t);}).reduce(function(a,t){return a+t.val;},0);
+  var filtSai=allPeriod.filter(function(t){return t.tipo==='saida'&&t.pago&&isPersonal(t)&&!t.isFaturaPag;}).reduce(function(a,t){return a+t.val;},0);
+  var eEl=getEl('deb-entra'); if(eEl) eEl.textContent=fmt(filtEnt);
+  var sEl=getEl('deb-sai');   if(sEl) sEl.textContent=fmt(filtSai);
+
+  // ── Saldo por dia ──
+  renderDailySaldo(allPeriod, bancoFilter);
+
+  // ── Filtered history (all filters applied) ──
+  var filtAll=allPeriod.filter(function(t){
+    if(day&&t.data&&new Date(t.data+'T12:00').getDate()!==day) return false;
+    if(search&&!t.desc.toLowerCase().includes(search)) return false;
+    if(catFilt&&String(t.cat)!==catFilt) return false;
+    if(t.val<valMin) return false;
+    if(t.val>valMax) return false;
+    return true;
+  });
+  var sorted=window.applySort(filtAll,debSortMode);
+  var el2=getEl('tx-deb'); if(!el2) return;
+  el2.innerHTML=sorted.length?sorted.map(function(t){return renderTxRow(Object.assign({},t,{origem:'debito'}));}).join(''):
+    '<div class="empty"><div class="big">🏦</div><p>Nenhum lançamento encontrado.</p></div>';
+  if(typeof debMultiMode!=='undefined'&&debMultiMode&&typeof injectDebCheckboxes==='function') setTimeout(injectDebCheckboxes,0);
+};
+
+// ── v19 — renderCredTab: include card filter ──────────────────
+window.renderCredTab = function() {
+  buildCardFilter();
+  buildCatFilters();
+  credPeriod=getPickerPeriod('cred-month-sel','cred-year-sel');
+  var selM=credPeriod.m, selY=credPeriod.y;
+  var dayEl=getEl('cred-day-sel'); var day=dayEl?parseInt(dayEl.value):0;
+  var cardFilterEl=getEl('cred-card-filter'); var cardFilter=cardFilterEl?cardFilterEl.value:'';
+  if(cardFilter&&cardFilterEl) cardFilterEl.value=cardFilter;
+
+  var search  =(getEl('cred-search')   ?getEl('cred-search').value.trim().toLowerCase():'');
+  var catFilt =(getEl('cred-cat-filter')?getEl('cred-cat-filter').value:'');
+  var valMin  =parseFloat(getEl('cred-val-min')?getEl('cred-val-min').value:'')||0;
+  var valMax  =parseFloat(getEl('cred-val-max')?getEl('cred-val-max').value:'')||Infinity;
+
+  // ── Contas a vencer ──
+  var fatCredEl=getEl('fat-cred');
+  if(fatCredEl){
+    var faturas=[];
+    cards.forEach(function(c){
+      if(!c.vencDia) return;
+      if(cardFilter&&String(c.id)!==cardFilter) return; // respect card filter
+      var gastos  =credTxs.filter(function(t){return String(t.cartao)===String(c.id)&&parseInt(t.venc)===selM&&parseInt(t.anoVenc)===selY&&t.tipo!=='estorno'&&!t.estornado;});
+      var estornos=credTxs.filter(function(t){return String(t.cartao)===String(c.id)&&parseInt(t.venc)===selM&&parseInt(t.anoVenc)===selY&&(t.tipo==='estorno'||t.estornado);});
+      var liquido=Math.max(0,gastos.reduce(function(a,t){return a+t.val;},0)-estornos.reduce(function(a,t){return a+t.val;},0));
+      if(liquido<=0) return;
+      var vd=new Date(selY,selM,c.vencDia);
+      var now2=new Date(); var dias=Math.round((vd-now2)/864e5);
+      var pago=debTxs.some(function(t){return t.isFaturaPag&&String(t.cartaoRef)===String(c.id)&&t.vencFatM===selM&&t.vencFatY===selY;});
+      faturas.push({card:c,liquido:liquido,vencDate:vd,dias:dias,pago:pago,vencM:selM,vencY:selY});
+    });
+    fatCredEl.innerHTML=faturas.length?faturas.map(function(b){
+      var cls=b.pago?'fb-paid':b.dias<=0?'fb-urg':b.dias<=7?'fb-wrn':'fb-ok';
+      var label=b.pago?'Paga':b.dias<=0?'Vencida':b.dias+'d';
+      return '<div class="fatura-item">'+
+        '<div class="fat-ico" style="background:rgba(139,92,246,.12)">💳</div>'+
+        '<div class="fat-inf"><div class="fat-name">'+b.card.banco+' — '+b.card.nome+'</div>'+
+        '<div class="fat-date">Vence '+b.vencDate.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})+'</div></div>'+
+        '<div class="fat-right"><div class="fat-val">'+fmt(b.liquido)+'</div>'+
+        '<div class="fat-badge '+cls+'">'+label+'</div>'+
+        '<div class="fat-actions">'+
+        (!b.pago?'<button class="card-bill-pay" onclick="abrirPagamentoFatura(\''+b.card.id+'\',\''+b.vencM+'\',\''+b.vencY+'\','+b.liquido+')">✓ Pagar</button>':
+                 '<span style="font-size:11px;color:var(--green)">✓ Paga</span>')+
+        '</div></div></div>';
+    }).join(''):
+    '<div class="empty" style="padding:14px 0"><div class="big">✅</div><p>Nenhuma fatura em '+MONTHS[selM]+'/'+selY+'.</p></div>';
+  }
+
+  // ── Lançamentos ──
+  var filtered=filterByMonthYear(credTxs,selM,selY).filter(function(t){
+    if(day&&t.data&&new Date(t.data+'T12:00').getDate()!==day) return false;
+    if(cardFilter&&String(t.cartao)!==String(cardFilter)) return false;
+    if(search&&!t.desc.toLowerCase().includes(search)) return false;
+    if(catFilt&&String(t.cat)!==catFilt) return false;
+    if(t.val<valMin) return false;
+    if(t.val>valMax) return false;
+    return true;
+  });
+  filtered=window.applySort(filtered,credSortMode);
+  var el=getEl('tx-cred'); if(!el) return;
+  if(!filtered.length){
+    el.innerHTML='<div class="empty"><div class="big">💳</div><p>Nenhum lançamento encontrado.</p></div>';
+  } else {
+    var gastos  =filtered.filter(function(t){return !t.estornado&&t.tipo!=='estorno';}).reduce(function(a,t){return a+t.val;},0);
+    var estornos=filtered.filter(function(t){return t.estornado||t.tipo==='estorno';}).reduce(function(a,t){return a+t.val;},0);
+    el.innerHTML=filtered.map(function(t){return renderTxRow(Object.assign({},t,{origem:'credito'}));}).join('');
+    if(estornos>0){
+      el.innerHTML+='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 4px;border-top:.5px solid var(--border);margin-top:4px">'+
+        '<div style="font-size:12px;color:var(--text3)">Gastos: '+fmt(gastos)+' − Estornos: '+fmt(estornos)+'</div>'+
+        '<div style="font-size:14px;font-weight:700;color:var(--red)">'+fmt(gastos-estornos)+'</div></div>';
+    }
+  }
+  // Limit bar — use unpaid txs only for accurate available limit
+  var cardId=cardFilter||(cards.length?String(cards[0].id):'');
+  var mainCard=cards.find(function(c){return String(c.id)===cardId;})||cards.find(function(c){return c.limite>0;});
+  if(mainCard&&mainCard.limite>0){
+    var used=credTxs.filter(function(t){return String(t.cartao)===String(mainCard.id)&&!t.pago&&!t.estornado&&t.tipo!=='estorno';}).reduce(function(a,t){return a+t.val;},0);
+    var tot=mainCard.limite,pct=Math.min(100,Math.round(used/tot*100));
+    var e;
+    if((e=getEl('lim-tot')))  e.textContent=fmt(tot);
+    if((e=getEl('lim-used'))) e.textContent=fmt(used);
+    if((e=getEl('lim-disp'))) e.textContent=fmt(tot-used);
+    if((e=getEl('lim-pct')))  e.textContent=pct+'%';
+    if((e=getEl('lim-fill'))) e.style.width=pct+'%';
+  }
+  if(typeof credMultiMode!=='undefined'&&credMultiMode&&typeof injectCredCheckboxes==='function') setTimeout(injectCredCheckboxes,0);
+};
+
+// ── v19.6 — exportPDF: improved débito with saldo ─────────────
+window.exportPDF = function(aba) {
+  var selM,selY,mesNome;
+  if(aba==='credito'){
+    var cp=getPickerPeriod('cred-month-sel','cred-year-sel'); selM=cp.m; selY=cp.y;
+  } else {
+    var dp=getPickerPeriod('deb-month-sel','deb-year-sel'); selM=dp.m; selY=dp.y;
+  }
+  mesNome=MONTHS[selM]+' '+selY;
+
+  var css=[
+    'body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#fff;color:#111}',
+    '.logo{font-size:28px;font-weight:900;color:#8b5cf6;letter-spacing:-1px;margin-bottom:2px}',
+    '.periodo{font-size:13px;color:#666;margin-bottom:18px}',
+    '.titulo{font-size:15px;font-weight:700;margin-bottom:10px;padding-bottom:5px;border-bottom:2px solid #8b5cf6}',
+    'table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:18px}',
+    'th{background:#8b5cf6;color:#fff;padding:7px 9px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px}',
+    'td{padding:6px 9px;border-bottom:1px solid #eee}',
+    'tr:nth-child(even) td{background:#f9f7ff}',
+    '.pos{color:#16a34a;font-weight:600}','.neg{color:#dc2626;font-weight:600}',
+    '.resumo{background:#f5f3ff;border-radius:8px;padding:12px 16px;margin-top:10px}',
+    '.resumo-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}',
+    '.resumo-total{font-weight:700;font-size:15px;border-top:1px solid #c4b5fd;margin-top:5px;padding-top:7px}',
+    '@media print{body{margin:0;padding:10px}}'
+  ].join('\n');
+
+  function fmtP(v){return 'R$ '+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+  var tableHTML='',resumoHTML='',tituloAba='';
+
+  if(aba==='debito'){
+    tituloAba='Relatório de Débito';
+    var bancoFilter=getEl('deb-banco-filter')?getEl('deb-banco-filter').value:'';
+    var banco=bancoFilter?bancos.find(function(b){return String(b.id)===bancoFilter;}):null;
+    var txs=filterByMonthYear(debTxs,selM,selY)
+      .filter(function(t){return !t.isCofrinho&&!t.isTransfer&&(!bancoFilter||String(t.bancoId)===bancoFilter);})
+      .sort(function(a,b){return (a.data||'').localeCompare(b.data||'');});
+
+    // Saldo inicial = all txs before period for this banco
+    var periodStart=new Date(selY,selM,1);
+    var saldoInicial=debTxs.filter(function(t){
+      return (!bancoFilter||String(t.bancoId)===bancoFilter)&&t.data&&new Date(t.data+'T12:00')<periodStart&&!t.isCofrinho&&!t.isTransfer;
+    }).reduce(function(a,t){
+      if(t.tipo==='entrada') return a+t.val;
+      if(t.tipo==='saida'&&t.pago) return a-t.val;
+      return a;
+    },0);
+
+    var totalEnt=txs.filter(function(t){return t.tipo==='entrada';}).reduce(function(a,t){return a+t.val;},0);
+    var totalSai=txs.filter(function(t){return t.tipo==='saida'&&t.pago;}).reduce(function(a,t){return a+t.val;},0);
+    var saldoFinal=saldoInicial+totalEnt-totalSai;
+
+    tableHTML='<table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Valor</th></tr></thead><tbody>'+
+      txs.map(function(t){
+        var cat=getCat(t.cat);
+        var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}):'—';
+        var tipo=t.tipo==='entrada'?'Ganho':'Gasto';
+        var cls=t.tipo==='entrada'?'pos':'neg';
+        var sign=t.tipo==='entrada'?'+':'-';
+        return '<tr><td>'+d+'</td><td>'+t.desc+'</td><td>'+cat.emoji+' '+cat.nome+'</td><td>'+tipo+'</td><td class="'+cls+'">'+sign+fmtP(t.val)+'</td></tr>';
+      }).join('')+'</tbody></table>';
+    resumoHTML='<div class="resumo">'+
+      (banco?'<div class="resumo-row"><span>Conta</span><span>'+banco.nome+'</span></div>':'')+
+      '<div class="resumo-row"><span>Saldo inicial do período</span><span class="'+(saldoInicial>=0?'pos':'neg')+'">'+fmtP(saldoInicial)+'</span></div>'+
+      '<div class="resumo-row"><span>Total de Ganhos</span><span class="pos">+'+fmtP(totalEnt)+'</span></div>'+
+      '<div class="resumo-row"><span>Total de Gastos</span><span class="neg">−'+fmtP(totalSai)+'</span></div>'+
+      '<div class="resumo-row resumo-total"><span>Saldo Final</span><span class="'+(saldoFinal>=0?'pos':'neg')+'">'+(saldoFinal>=0?'+':'−')+fmtP(Math.abs(saldoFinal))+'</span></div>'+
+    '</div>';
+
+  } else if(aba==='credito'){
+    tituloAba='Fatura de Crédito';
+    var cardFilter=getEl('cred-card-filter')?getEl('cred-card-filter').value:'';
+    var txsCred=filterByMonthYear(credTxs,selM,selY)
+      .filter(function(t){return !cardFilter||String(t.cartao)===cardFilter;})
+      .sort(function(a,b){return (a.data||'').localeCompare(b.data||'');});
+    var totalGastos =txsCred.filter(function(t){return !t.estornado&&t.tipo!=='estorno';}).reduce(function(a,t){return a+t.val;},0);
+    var totalEstorno=txsCred.filter(function(t){return t.estornado||t.tipo==='estorno';}).reduce(function(a,t){return a+t.val;},0);
+    var totalFatura =Math.max(0,totalGastos-totalEstorno);
+    tableHTML='<table><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th><th>Tipo</th></tr></thead><tbody>'+
+      txsCred.map(function(t){
+        var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}):'—';
+        var isEst=t.estornado||t.tipo==='estorno';
+        return '<tr><td>'+d+'</td><td>'+(isEst?'[Estorno] ':'')+t.desc+'</td><td class="'+(isEst?'pos':'neg')+'">'+(isEst?'+':'−')+fmtP(t.val)+'</td><td>'+(isEst?'Estorno':'Gasto')+'</td></tr>';
+      }).join('')+'</tbody></table>';
+    resumoHTML='<div class="resumo">'+
+      '<div class="resumo-row"><span>Total de Gastos</span><span class="neg">'+fmtP(totalGastos)+'</span></div>'+
+      '<div class="resumo-row"><span>Total de Estornos</span><span class="pos">+'+fmtP(totalEstorno)+'</span></div>'+
+      '<div class="resumo-row resumo-total"><span>Total da Fatura</span><span class="neg">'+fmtP(totalFatura)+'</span></div>'+
+    '</div>';
+  }
+
+  var bodyHTML='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin — '+tituloAba+'</title><style>'+css+'</style></head><body>'+
+    '<div class="logo">gabi.fin</div>'+
+    '<div class="periodo">'+tituloAba+' · '+mesNome+'</div>'+
+    '<div class="titulo">Lançamentos</div>'+tableHTML+
+    '<div class="titulo">Resumo</div>'+resumoHTML+
+    '<script>window.onload=function(){window.print();}<\/script>'+
+  '</body></html>';
+  var win=window.open('','_blank');
+  if(!win){alert('Permita pop-ups para exportar PDF.');return;}
+  win.document.write(bodyHTML); win.document.close();
+};
+
+// ── v19 — renderAll: always rebuild banco + card filters ──────
+var _origRenderAll_v19 = window.renderAll;
+window.renderAll = function() {
+  if(typeof _origRenderAll_v19==='function') _origRenderAll_v19();
+  setTimeout(function(){ buildBancoFilter(); buildCardFilter(); buildCatFilters(); },50);
+};
 
 </script>
 </body>
