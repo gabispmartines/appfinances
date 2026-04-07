@@ -674,6 +674,13 @@ textarea{font-size:16px !important}
     <!-- ══ ANÁLISES ══ -->
     <div class="tab" id="tab-analises">
       <div class="hdr"><div><div class="hdr-greet">Minhas</div><div class="hdr-name"><span class="tab-name-gradient">Análises</span></div></div></div>
+      <div class="sort-bar" style="margin-bottom:10px">
+        <span class="sort-lbl">Uso:</span>
+        <select class="fsel" id="anal-uso-filter" onchange="renderCharts()" style="flex:1;padding:5px 10px;font-size:13px;height:36px">
+          <option value="">Todos</option>
+          <option value="pessoal">Pessoal</option>
+        </select>
+      </div>
       <div class="period-picker" id="anal-period-picker">
         <div class="period-nav" onclick="shiftAnalPeriod(-1)">‹</div>
         <select id="anal-month-sel" onchange="renderCharts()"></select>
@@ -700,8 +707,8 @@ textarea{font-size:16px !important}
       <div id="insights-wrap" style="margin-bottom:8px"></div>
     </div>
 
-    <!-- ══ NEGÓCIOS ══ -->
-    <div class="tab" id="tab-negocios">
+    <!-- ══ NEGÓCIOS ══ (hidden — merged into Análises) -->
+    <div class="tab" id="tab-negocios" style="display:none !important">
       <div class="biz-list-view" id="biz-list-view">
         <div class="hdr">
           <div><div class="hdr-greet">Meus</div><div class="hdr-name"><span class="tab-name-gradient">Negócios</span></div></div>
@@ -850,7 +857,6 @@ cofrinho,deposito,CDB Nubank,500.00,2026-04-01,,Nubank</div>
     <div class="ni" onclick="goTab('debito',this)"><div class="ni-bar"></div><div class="ni-ico">🏦</div><div class="ni-lbl">Débito</div></div>
     <div class="ni" onclick="goTab('cofrinho',this)"><div class="ni-bar"></div><div class="ni-ico">🐷</div><div class="ni-lbl">Cofrinho</div></div>
     <div class="ni" onclick="goTab('analises',this)"><div class="ni-bar"></div><div class="ni-ico">📊</div><div class="ni-lbl">Análises</div></div>
-    <div class="ni" onclick="goTab('negocios',this)"><div class="ni-bar"></div><div class="ni-ico">🛍️</div><div class="ni-lbl">Negócios</div></div>
     <div class="ni" onclick="goTab('config',this)"><div class="ni-bar"></div><div class="ni-ico">⚙️</div><div class="ni-lbl">Config</div></div>
   </div>
 </div>
@@ -1102,6 +1108,17 @@ cofrinho,deposito,CDB Nubank,500.00,2026-04-01,,Nubank</div>
     <div class="frow"><div class="flbl">Nº conta</div><input class="finp" id="banco-conta" placeholder="12345-6"></div>
   </div>
   <div class="frow"><div class="flbl">Chave PIX (opcional)</div><input class="finp" id="banco-pix" placeholder="CPF, e-mail, telefone..."></div>
+  <div id="banco-saldo-rows">
+    <div class="frow" style="margin-top:4px">
+      <div style="font-size:11px;color:var(--p2);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Saldo inicial (opcional)</div>
+      <div class="flbl">Valor do saldo atual</div>
+      <input class="finp" id="banco-saldo-val" type="number" inputmode="decimal" placeholder="0,00">
+    </div>
+    <div class="frow">
+      <div class="flbl">Data do saldo</div>
+      <input class="finp" id="banco-saldo-data" type="date">
+    </div>
+  </div>
   <input type="hidden" id="banco-edit-id">
   <button class="fbtn" onclick="saveBanco()">Salvar banco</button>
   <button class="fbtn-del" id="banco-del-btn" style="display:none" onclick="delBancoById(parseInt(getEl('banco-edit-id').value))">Remover</button>
@@ -1153,42 +1170,43 @@ var metas    = L('gf2_metas', [
 ]);
 var cards    = L('gf2_cards', []);
 var cats = L('gf2_cats', [
+  // GASTOS — ordem por uso
   {id:1,  nome:'Alimentação',        emoji:'🛒', cor:'#f59e0b', tipo:'gasto'},
-  {id:2,  nome:'Casa',               emoji:'🏠', cor:'#6366f1', tipo:'gasto'},
+  {id:30, nome:'Delivery',           emoji:'🍔', cor:'#dc2626', tipo:'gasto'},
+  {id:31, nome:'Mercado',            emoji:'🛒', cor:'#f59e0b', tipo:'gasto'},
   {id:3,  nome:'Transporte',         emoji:'🚗', cor:'#ef4444', tipo:'gasto'},
   {id:4,  nome:'Carro',              emoji:'🚙', cor:'#dc2626', tipo:'gasto'},
+  {id:2,  nome:'Casa',               emoji:'🏠', cor:'#6366f1', tipo:'gasto'},
   {id:5,  nome:'Saúde',              emoji:'💊', cor:'#14b8a6', tipo:'gasto'},
-  {id:6,  nome:'Vestuário',          emoji:'👗', cor:'#ec4899', tipo:'gasto'},
-  {id:7,  nome:'Lazer',              emoji:'🎬', cor:'#8b5cf6', tipo:'gasto'},
-  {id:8,  nome:'Outros (gastos)',    emoji:'💸', cor:'#6b7280', tipo:'gasto'},
   {id:9,  nome:'Assinaturas',        emoji:'📺', cor:'#3b82f6', tipo:'gasto'},
-  {id:10, nome:'Serviços',           emoji:'🔧', cor:'#78716c', tipo:'gasto'},
-  {id:11, nome:'Educação',           emoji:'🎓', cor:'#06b6d4', tipo:'gasto'},
-  {id:12, nome:'Taxas',              emoji:'🏦', cor:'#374151', tipo:'gasto'},
+  {id:33, nome:'Apps',               emoji:'📱', cor:'#8b5cf6', tipo:'gasto'},
+  {id:7,  nome:'Lazer',              emoji:'🎬', cor:'#8b5cf6', tipo:'gasto'},
+  {id:6,  nome:'Vestuário',          emoji:'👗', cor:'#ec4899', tipo:'gasto'},
+  {id:16, nome:'Pessoal',            emoji:'🧴', cor:'#f472b6', tipo:'gasto'},
   {id:13, nome:'Pet',                emoji:'🐶', cor:'#84cc16', tipo:'gasto'},
+  {id:11, nome:'Educação',           emoji:'🎓', cor:'#06b6d4', tipo:'gasto'},
+  {id:10, nome:'Serviços',           emoji:'🔧', cor:'#78716c', tipo:'gasto'},
+  {id:12, nome:'Taxas',              emoji:'🏦', cor:'#374151', tipo:'gasto'},
+  {id:17, nome:'Dívidas',            emoji:'💳', cor:'#9f1239', tipo:'gasto'},
   {id:14, nome:'Viagem',             emoji:'✈️', cor:'#0ea5e9', tipo:'gasto'},
   {id:15, nome:'Objetivos de vida',  emoji:'🎯', cor:'#a855f7', tipo:'gasto'},
-  {id:16, nome:'Pessoal',            emoji:'🧴', cor:'#f472b6', tipo:'gasto'},
-  {id:17, nome:'Dívidas',            emoji:'💳', cor:'#9f1239', tipo:'gasto'},
+  {id:34, nome:'Doações',           emoji:'❤️', cor:'#e11d48', tipo:'gasto'},
+  {id:35, nome:'Presente',           emoji:'🎁', cor:'#f472b6', tipo:'gasto'},
+  {id:8,  nome:'Outros (gastos)',    emoji:'💸', cor:'#6b7280', tipo:'gasto'},
+  // GANHOS — ordem por uso
   {id:20, nome:'Salário',            emoji:'💰', cor:'#22c55e', tipo:'ganho'},
-  {id:21, nome:'Investimento',       emoji:'📈', cor:'#16a34a', tipo:'ganho'},
-  {id:22, nome:'Prêmio',             emoji:'🏆', cor:'#f59e0b', tipo:'ganho'},
-  {id:23, nome:'Presente',           emoji:'🎁', cor:'#e11d48', tipo:'ganho'},
-  {id:24, nome:'Outros (ganhos)',    emoji:'💵', cor:'#059669', tipo:'ganho'},
-  {id:25, nome:'Cashback',           emoji:'🔄', cor:'#0284c7', tipo:'ganho'},
   {id:26, nome:'Receitas Variáveis', emoji:'📊', cor:'#7c3aed', tipo:'ganho'},
-  {id:30, nome:'Delivery',          emoji:'🍔', cor:'#dc2626', tipo:'gasto'},
-  {id:31, nome:'Mercado',           emoji:'🛒', cor:'#f59e0b', tipo:'gasto'},
-  {id:32, nome:'Streaming',         emoji:'📺', cor:'#3b82f6', tipo:'gasto'},
-  {id:33, nome:'Apps',              emoji:'📱', cor:'#8b5cf6', tipo:'gasto'},
-  {id:34, nome:'Doações',           emoji:'❤️',  cor:'#e11d48', tipo:'gasto'},
-  {id:35, nome:'Presente',          emoji:'🎁', cor:'#f472b6', tipo:'gasto'},
-  {id:40, nome:'Reembolso',         emoji:'↩️',  cor:'#059669', tipo:'ganho'},
-  {id:41, nome:'Venda extra',       emoji:'🏷️',  cor:'#16a34a', tipo:'ganho'},
-  {id:42, nome:'Freelance',         emoji:'💻', cor:'#0284c7', tipo:'ganho'},
+  {id:42, nome:'Freelance',          emoji:'💻', cor:'#0284c7', tipo:'ganho'},
+  {id:41, nome:'Venda extra',        emoji:'🏷️', cor:'#16a34a', tipo:'ganho'},
+  {id:21, nome:'Investimento',       emoji:'📈', cor:'#16a34a', tipo:'ganho'},
   {id:43, nome:'Juros / Rendimentos',emoji:'📈', cor:'#0ea5e9', tipo:'ganho'},
-  {id:44, nome:'Dividendos',        emoji:'💹', cor:'#7c3aed', tipo:'ganho'},
-  {id:45, nome:'Restituição',       emoji:'🏛️',  cor:'#22c55e', tipo:'ganho'}
+  {id:44, nome:'Dividendos',         emoji:'💹', cor:'#7c3aed', tipo:'ganho'},
+  {id:25, nome:'Cashback',           emoji:'🔄', cor:'#0284c7', tipo:'ganho'},
+  {id:40, nome:'Reembolso',          emoji:'↩️', cor:'#059669', tipo:'ganho'},
+  {id:22, nome:'Prêmio',             emoji:'🏆', cor:'#f59e0b', tipo:'ganho'},
+  {id:45, nome:'Restituição',       emoji:'🏛️', cor:'#22c55e', tipo:'ganho'},
+  {id:23, nome:'Presente',           emoji:'🎁', cor:'#e11d48', tipo:'ganho'},
+  {id:24, nome:'Outros (ganhos)',    emoji:'💵', cor:'#059669', tipo:'ganho'}
 ]);
 var usos = L('gf2_usos', [{id:1, nome:'Pessoal', fixo:true}]);
 var bizs    = L('gf2_bizs', []);
@@ -6217,6 +6235,169 @@ function confirmarPagamentoFatura() {
     alert('✅ Pagamento registrado!\n\nFatura marcada como paga.\n'+fmt(valTotal)+' debitado de '+(bancos.find(function(b){return String(b.id)===String(bancoId);}))||{nome:'conta'}).nome+' em '+new Date(dataPag+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})+'.';
   },100);
 }
+
+
+// ══════════════════════════════════════════════════════
+// v17.1 — saveBanco: create saldo inicial debit entry
+// ══════════════════════════════════════════════════════
+var _origSaveBanco_v17 = window.saveBanco;
+window.saveBanco = function() {
+  var nome = getEl('banco-nome').value.trim();
+  if(!nome){alert('Informe o nome do banco.');return;}
+  var editId = getEl('banco-edit-id').value;
+  var obj = {
+    id:       editId ? parseInt(editId) : Date.now(),
+    nome:     nome,
+    tipo:     getEl('banco-tipo').value,
+    agencia:  getEl('banco-agencia').value.trim(),
+    conta:    getEl('banco-conta').value.trim(),
+    pix:      getEl('banco-pix').value.trim()
+  };
+  if(editId) bancos=bancos.map(function(b){return b.id===parseInt(editId)?obj:b;});
+  else bancos.push(obj);
+  S('gf2_bancos',bancos);
+
+  // Create saldo inicial lançamento if filling in a new bank with saldo
+  if(!editId) {
+    var saldoVal  = parseFloat(getEl('banco-saldo-val')?getEl('banco-saldo-val').value:'');
+    var saldoData = getEl('banco-saldo-data')?getEl('banco-saldo-data').value:'';
+    if(!isNaN(saldoVal) && saldoVal > 0 && saldoData) {
+      // Find "Outros (ganhos)" or first ganho cat as fallback
+      var catSaldo = cats.find(function(c){return c.nome==='Sal\u00e1rio'||c.tipo==='ganho';});
+      var catId = catSaldo ? catSaldo.id : 20;
+      debTxs.unshift({
+        id:          Date.now()+1,
+        tipo:        'entrada',
+        origem:      'debito',
+        desc:        'Saldo inicial',
+        val:         saldoVal,
+        cat:         catId,
+        uso:         '',
+        bancoId:     obj.id,
+        data:        saldoData,
+        recorrencia: 'unica',
+        pago:        true,
+        isSaldoInicial: true
+      });
+      S('gf2_deb', debTxs);
+    }
+    // Clear saldo fields for next time
+    if(getEl('banco-saldo-val'))  getEl('banco-saldo-val').value='';
+    if(getEl('banco-saldo-data')) getEl('banco-saldo-data').value='';
+  }
+
+  closeM('m-banco');
+  if(typeof renderCfgBancos==='function') renderCfgBancos();
+  if(typeof refreshBancoSels==='function') refreshBancoSels();
+  renderAll();
+};
+
+// ══════════════════════════════════════════════════════
+// v17.2 — openBancoModal: hide saldo rows when editing
+// ══════════════════════════════════════════════════════
+var _origOpenBancoModal_v17 = window.openBancoModal;
+window.openBancoModal = function(id) {
+  if(typeof _origOpenBancoModal_v17==='function') _origOpenBancoModal_v17(id);
+  // Hide saldo fields when editing existing bank
+  var saldoRows = getEl('banco-saldo-rows');
+  if(saldoRows) saldoRows.style.display = id ? 'none' : 'block';
+  // Pre-fill today's date for new banks
+  if(!id) {
+    var sdEl = getEl('banco-saldo-data');
+    if(sdEl && !sdEl.value) sdEl.value = new Date().toISOString().split('T')[0];
+  }
+};
+
+// ══════════════════════════════════════════════════════
+// v17.2 — renderCharts: respect "Uso" filter
+// ══════════════════════════════════════════════════════
+var _origRenderCharts_v17 = window.renderCharts;
+window.renderCharts = function() {
+  analPeriod = getPickerPeriod('anal-month-sel','anal-year-sel');
+  var selM=analPeriod.m, selY=analPeriod.y;
+
+  // Populate uso filter options dynamically
+  var usoFilterEl = getEl('anal-uso-filter');
+  if(usoFilterEl) {
+    var curUsoFilter = usoFilterEl.value;
+    usoFilterEl.innerHTML = '<option value="">Todos</option>' +
+      usos.map(function(u){ return '<option value="'+u.id+'">'+u.nome+'</option>'; }).join('');
+    if(curUsoFilter) usoFilterEl.value = curUsoFilter;
+  }
+  var usoFilter = usoFilterEl ? usoFilterEl.value : '';
+
+  function matchUso(t) {
+    if(!usoFilter) return true;
+    // "pessoal" matches usos with fixo:true or nome=Pessoal, or no uso
+    var usoObj = usos.find(function(u){return String(u.id)===String(t.uso);});
+    if(usoFilter && usoObj) return String(usoObj.id)===String(usoFilter);
+    return false;
+  }
+  function isPersonal(t){ return !t.isCofrinho&&!t.isTransfer&&!t.estornado&&matchUso(t); }
+
+  var credMes=filterByMonthYear(credTxs.filter(isPersonal),selM,selY).reduce(function(a,t){return a+t.val;},0);
+  var debMes =filterByMonthYear(debTxs.filter(function(t){return t.tipo==='saida'&&t.pago&&isPersonal(t);}),selM,selY).reduce(function(a,t){return a+t.val;},0);
+  var entMes =filterByMonthYear(debTxs.filter(function(t){return t.tipo==='entrada'&&isPersonal(t)&&!t.isSaldoInicial;}),selM,selY).reduce(function(a,t){return a+t.val;},0);
+  if(getEl('an-rec'))  getEl('an-rec').textContent=fmt(entMes);
+  if(getEl('an-desp')) getEl('an-desp').textContent=fmt(credMes+debMes);
+
+  var months5=[],recHist=[],despHist=[];
+  for(var i=-2;i<=2;i++){
+    var mm=selM+i,yy=selY;
+    while(mm<0){mm+=12;yy--;} while(mm>11){mm-=12;yy++;}
+    months5.push(MONTHS_SHORT[mm]+(yy!==selY?' '+String(yy).slice(2):''));
+    var rec=debTxs.filter(function(t){return t.tipo==='entrada'&&isPersonal(t)&&!t.isSaldoInicial&&t.data&&new Date(t.data+'T12:00').getMonth()===mm&&new Date(t.data+'T12:00').getFullYear()===yy;}).reduce(function(a,t){return a+t.val;},0);
+    var desp=credTxs.filter(function(t){return isPersonal(t)&&t.data&&new Date(t.data+'T12:00').getMonth()===mm&&new Date(t.data+'T12:00').getFullYear()===yy;}).reduce(function(a,t){return a+t.val;},0)+
+             debTxs.filter(function(t){return t.tipo==='saida'&&t.pago&&isPersonal(t)&&t.data&&new Date(t.data+'T12:00').getMonth()===mm&&new Date(t.data+'T12:00').getFullYear()===yy;}).reduce(function(a,t){return a+t.val;},0);
+    recHist.push(rec); despHist.push(desp);
+  }
+
+  if(chartEvol) chartEvol.destroy();
+  chartEvol=new Chart(getEl('chartEvol'),{type:'line',data:{labels:months5,datasets:[
+    {label:'Receitas',data:recHist,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.4,pointBackgroundColor:'#22c55e',pointRadius:5,borderWidth:2},
+    {label:'Despesas',data:despHist,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.06)',fill:true,tension:.4,pointBackgroundColor:'#ef4444',pointRadius:4,borderWidth:1.5}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9d9bc0',usePointStyle:true,font:{size:11}}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9d9bc0',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9d9bc0',font:{size:11}},beginAtZero:true}}}});
+
+  var allGastos=filterByMonthYear(credTxs.filter(isPersonal),selM,selY).concat(filterByMonthYear(debTxs.filter(function(t){return t.tipo==='saida'&&isPersonal(t);}),selM,selY));
+  var cLabels=[],cVals=[],cCols=[];
+  cats.forEach(function(c){
+    var v=allGastos.filter(function(t){return String(t.cat)===String(c.id);}).reduce(function(a,t){return a+t.val;},0);
+    if(v>0){cLabels.push(c.nome);cVals.push(v);cCols.push(c.cor||'#8b5cf6');}
+  });
+  var cTotal=cVals.reduce(function(a,v){return a+v;},0);
+  if(getEl('cat-legend')) getEl('cat-legend').innerHTML=cLabels.length?cLabels.map(function(l,i){
+    var pct=cTotal>0?Math.round(cVals[i]/cTotal*100):0;
+    return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">'+
+      '<div style="width:8px;height:8px;border-radius:2px;background:'+cCols[i]+';flex-shrink:0"></div>'+
+      '<div style="font-size:12px;color:var(--text2);flex:1">'+l+'</div>'+
+      '<div style="font-size:11px;color:var(--text3)">'+pct+'%</div>'+
+      '<div style="font-size:12px;font-weight:600;min-width:60px;text-align:right">'+fmt(cVals[i])+'</div></div>';
+  }).join(''):'<div style="color:var(--text3);font-size:13px;text-align:center;padding:10px 0">Nenhum dado no período.</div>';
+  if(chartCat) chartCat.destroy();
+  chartCat=new Chart(getEl('chartCat'),{type:'doughnut',data:{labels:cLabels,datasets:[{data:cVals.length?cVals:[1],backgroundColor:cVals.length?cCols:['#1a1a28'],borderColor:'#08080f',borderWidth:2,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:false}}}});
+  if(chartComp) chartComp.destroy();
+  chartComp=new Chart(getEl('chartComp'),{type:'bar',data:{labels:months5,datasets:[{label:'Receitas',data:recHist,backgroundColor:'rgba(34,197,94,.7)',borderRadius:5},{label:'Despesas',data:despHist,backgroundColor:'rgba(239,68,68,.7)',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9d9bc0',usePointStyle:true,font:{size:11}}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9d9bc0',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9d9bc0',font:{size:11},callback:function(v){return 'R$'+Math.round(v/1000)+'k';}},beginAtZero:true}}}});
+  var saldo=entMes-credMes-debMes;
+  if(getEl('insights-wrap')) getEl('insights-wrap').innerHTML=
+    '<div class="insight"><div class="insight-ico">'+(saldo>=0?'📈':'⚠️')+'</div><div class="insight-txt">'+(saldo>=0?'Saldo positivo de <b>'+fmt(saldo)+'</b> em '+MONTHS[selM]+'/'+selY+'.':'Saldo negativo de <b>'+fmt(Math.abs(saldo))+'</b>. Despesas superaram receitas.')+'</div></div>'+
+    (cLabels.length&&cTotal>0?'<div class="insight" style="margin-top:6px"><div class="insight-ico">💡</div><div class="insight-txt">Maior gasto: <b>'+cLabels[cVals.indexOf(Math.max.apply(null,cVals))]+'</b>.</div></div>':'');
+};
+
+// ══════════════════════════════════════════════════════
+// v17.3 — renderAll: populate uso filter after building usos
+// ══════════════════════════════════════════════════════
+var _origRenderAll_v17 = window.renderAll;
+window.renderAll = function() {
+  if(typeof _origRenderAll_v17==='function') _origRenderAll_v17();
+  // Keep uso filter populated
+  var usoFilterEl=getEl('anal-uso-filter');
+  if(usoFilterEl){
+    var cur=usoFilterEl.value;
+    usoFilterEl.innerHTML='<option value="">Todos</option>'+
+      usos.map(function(u){return '<option value="'+u.id+'">'+u.nome+'</option>';}).join('');
+    if(cur) usoFilterEl.value=cur;
+  }
+};
 
 </script>
 </body>
