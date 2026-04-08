@@ -473,58 +473,7 @@ background-clip:text;display:inline-block
 </head>
 <body>
 
-<!-- ONBOARDING — first time setup -->
-
-<div id="onboard" class="hidden">
-  <div class="ob-bg"><div class="ob-orb ob-orb1"></div><div class="ob-orb ob-orb2"></div></div>
-  <div class="ob-content">
-    <div class="ob-logo">gabi.fin</div>
-    <div class="ob-tag">controle financeiro pessoal</div>
-    <div class="ob-card">
-      <div class="ob-step-lbl">Bem-vindo(a) ao gabi.fin</div>
-      <div class="ob-title">Vamos começar! 🎉</div>
-      <div class="ob-sub">Me informe seu nome e escolha uma senha para proteger suas finanças.</div>
-      <div class="ob-frow">
-        <div class="ob-lbl">Seu nome</div>
-        <input class="ob-inp" id="ob-nome" placeholder="Ex: Gabriela" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-      <div class="ob-frow">
-        <div class="ob-lbl">Seu sobrenome</div>
-        <input class="ob-inp" id="ob-sobrenome" placeholder="Ex: Martines" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-      <div id="ob-nome-err" class="ob-err">Por favor, informe seu nome.</div>
-      <div class="ob-frow">
-        <div class="ob-lbl">Crie sua senha</div>
-        <input class="ob-inp" id="ob-senha" type="password" placeholder="Qualquer caractere, sem limite" autocomplete="new-password">
-      </div>
-      <div class="ob-frow">
-        <div class="ob-lbl">Confirmar senha</div>
-        <input class="ob-inp" id="ob-senha2" type="password" placeholder="Repita a senha" autocomplete="new-password">
-      </div>
-      <div id="ob-senha-err" class="ob-err">As senhas não coincidem ou estão em branco.</div>
-      <button class="ob-btn" onclick="saveOnboard()">Criar minha conta →</button>
-    </div>
-  </div>
-</div>
-
-<!-- LOGIN SCREEN -->
-
-<div id="loginscreen" class="hidden">
-  <div class="ob-bg"><div class="ob-orb ob-orb1"></div><div class="ob-orb ob-orb2"></div></div>
-  <div class="ls-inner">
-    <div class="ls-logo">gabi.fin</div>
-    <div class="ls-tag">controle financeiro pessoal</div>
-    <div class="ls-welcome" id="ls-welcome-txt">Bem-vinda de volta! 👋</div>
-    <div class="ls-card">
-      <div class="ls-lbl">Senha</div>
-      <input class="ls-inp" id="ls-senha" type="password" placeholder="Digite sua senha" autocomplete="current-password">
-      <div class="ls-err" id="ls-err">Senha incorreta. Tente novamente.</div>
-      <button class="ls-btn" onclick="doLogin()">Entrar</button>
-    </div>
-  </div>
-</div>
-
-<!-- SPLASH -->
+<!-- WELCOME SPLASH -->
 
 <div id="splash">
   <div class="splash-bg">
@@ -535,6 +484,7 @@ background-clip:text;display:inline-block
   <div class="splash-c">
     <div class="splash-logo">gabi.fin</div>
     <div class="splash-tag">controle financeiro pessoal</div>
+    <div id="splash-welcome" style="margin-top:18px;font-size:16px;color:#c4b5fd;min-height:24px"></div>
     <div class="splash-bar"><div class="splash-prog"></div></div>
   </div>
 </div>
@@ -629,7 +579,6 @@ background-clip:text;display:inline-block
   </div>
   <div class="multi-bar" id="cred-multi-bar"><span class="multi-bar-count" id="cred-sel-count">0 selecionados</span><button class="multi-bar-selall" onclick="selAllCred()">Tudo</button><button class="multi-bar-cancel" onclick="cancelMultiCred()">Cancelar</button><button class="multi-bar-del" onclick="delMultiCred()">🗑️ Excluir</button></div>
   <button class="multi-toggle-btn" id="cred-multi-btn" onclick="toggleMultiCred()" style="margin-bottom:8px">☑️ Selecionar múltiplos</button>
-  <div style="text-align:right;margin-bottom:8px"><button class="sort-btn" onclick="exportPDF('credito')" style="background:rgba(139,92,246,.12);color:var(--p2);border-color:rgba(139,92,246,.3)">📄 Exportar PDF</button></div>
   <div class="scard"><div id="tx-cred"></div></div>
 </div>
 
@@ -683,7 +632,6 @@ background-clip:text;display:inline-block
   <div class="multi-bar" id="deb-multi-bar"><span class="multi-bar-count" id="deb-sel-count">0 selecionados</span><button class="multi-bar-selall" onclick="selAllDeb()">Tudo</button><button class="multi-bar-cancel" onclick="cancelMultiDeb()">Cancelar</button><button class="multi-bar-del" onclick="delMultiDeb()">🗑️ Excluir</button></div>
   <button class="multi-toggle-btn" id="deb-multi-btn" onclick="toggleMultiDeb()" style="margin-bottom:8px">☑️ Selecionar múltiplos</button>
   <div id="deb-saldo-dias" style="margin-bottom:4px"></div>
-  <div style="text-align:right;margin-bottom:8px"><button class="sort-btn" onclick="exportPDF('debito')" style="background:rgba(139,92,246,.12);color:var(--p2);border-color:rgba(139,92,246,.3)">📄 Exportar PDF</button></div>
   <div class="scard"><div id="tx-deb"></div></div>
 </div>
 
@@ -2554,19 +2502,18 @@ function renderAll() {
   buildPeriodPicker('deb-month-sel','deb-year-sel',   debPeriod);
   buildPeriodPicker('anal-month-sel','anal-year-sel', analPeriod);
 
-  // Splash → then auth check
+  // Show name in welcome splash if saved
+  var nome  = localStorage.getItem('gf2_user_name')  || '';
+  var sobre = localStorage.getItem('gf2_user_sobre') || '';
+  var wEl = getEl('splash-welcome');
+  if (wEl && nome) wEl.textContent = 'Bem-vinda, ' + nome + (sobre ? ' ' + sobre : '') + '! 👋';
+
+  // Auto-open app after short splash
   setTimeout(function() {
     var sp = getEl('splash');
-    if (sp) { sp.style.opacity='0'; setTimeout(function(){ sp.style.display='none'; }, 500); }
-    // Check if user is already logged in (session)
-    var sessionOk = sessionStorage.getItem('gf2_session');
-    if (sessionOk) {
-      // Already authenticated this session
-      showApp();
-    } else {
-      checkAuth();
-    }
-  }, 2000);
+    if (sp) { sp.style.opacity='0'; setTimeout(function(){ sp.style.display='none'; },400); }
+    showApp();
+  }, 1800);
 })();
 
 // ═══ METAS DE ALOCAÇÃO DO COFRINHO ═════════════════════════════════
@@ -3156,17 +3103,7 @@ window.saveOnboard = function() {
   showApp();
 };
 
-// ═══ PATCH: showApp updates header with nome/sobrenome ═══
-var _origShowApp = window.showApp;
-window.showApp = function() {
-  sessionStorage.setItem('gf2_session','1');
-  try { renderAll(); } catch(e) { console.error(e); }
-  var nome  = localStorage.getItem('gf2_user_name') || '';
-  var sobre = localStorage.getItem('gf2_user_sobre') || '';
-  updateHeaderName(nome, sobre);
-  var ap = getEl('app');
-  if (ap) ap.style.opacity='1';
-};
+
 
 function updateHeaderName(nome, sobre) {
   // Início header
@@ -3179,30 +3116,7 @@ function updateHeaderName(nome, sobre) {
   document.querySelectorAll('.hdr-sobre-plain').forEach(function(el){ el.textContent = sobre; });
 }
 
-// ═══ PATCH: checkAuth — show correct welcome ═══
-var _origCheckAuth = window.checkAuth;
-window.checkAuth = function() {
-  var name  = localStorage.getItem('gf2_user_name');
-  var pass  = localStorage.getItem('gf2_user_pass');
-  if (!name || !pass) {
-    var ob = getEl('onboard');
-    if (ob) { ob.classList.remove('hidden'); ob.style.opacity='1'; }
-    return false;
-  }
-  var sobre = localStorage.getItem('gf2_user_sobre') || '';
-  var ls = getEl('loginscreen');
-  if (ls) {
-    ls.classList.remove('hidden');
-    ls.style.opacity='1';
-    var wt = getEl('ls-welcome-txt');
-    if (wt) {
-      wt.innerHTML = 'Bem-vinda de volta, <b>' + name + '</b>' +
-        (sobre ? ' <span style="background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700">' + sobre + '</span>' : '') + '! 👋';
-    }
-    setTimeout(function(){ var si=getEl('ls-senha'); if(si) si.focus(); }, 300);
-  }
-  return false;
-};
+
 
 // ═══ PATCH: saveCard — include holder name ═══
 var _origSaveCard = window.saveCard;
@@ -5393,50 +5307,63 @@ window.processCSV = function(text){
 };
 
 // exportPDF
-window.exportPDF = function(aba){
-  var selM,selY;if(aba==='credito'){var cp=getPickerPeriod('cred-month-sel','cred-year-sel');selM=cp.m;selY=cp.y;}else{var dp=getPickerPeriod('deb-month-sel','deb-year-sel');selM=dp.m;selY=dp.y;}
-  var mn=MONTHS[selM]+' '+selY,css='body{font-family:Arial,sans-serif;margin:0;padding:20px;color:#111}.logo{font-size:26px;font-weight:900;color:#8b5cf6;margin-bottom:2px}.periodo{font-size:13px;color:#666;margin-bottom:16px}.titulo{font-size:15px;font-weight:700;margin:14px 0 8px;padding-bottom:4px;border-bottom:2px solid #8b5cf6}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#8b5cf6;color:#fff;padding:7px 9px;text-align:left}td{padding:6px 9px;border-bottom:1px solid #eee}tr:nth-child(even) td{background:#f9f7ff}.pos{color:#16a34a;font-weight:600}.neg{color:#dc2626;font-weight:600}.res{background:#f5f3ff;border-radius:8px;padding:12px 16px;margin-top:10px}.rrow{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}.rtot{font-weight:700;font-size:15px;border-top:1px solid #c4b5fd;margin-top:5px;padding-top:7px}';
-  function fp(v){return 'R$ '+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
-  var tH='',rH2='',title='';
-  if(aba==='debito'){title='Relatório de Débito';var bf=(getEl('deb-banco-filter')||{value:''}).value,ba=bf?bancos.find(function(b){return String(b.id)===bf;}):null;var txs=filterByMonthYear(debTxs,selM,selY).filter(function(t){return !t.isCofrinho&&!t.isTransfer&&(!bf||String(t.bancoId)===bf);}).sort(function(a,b){return (a.data||'').localeCompare(b.data||'');});var ps=new Date(selY,selM,1),si=debTxs.filter(function(t){return(!bf||String(t.bancoId)===bf)&&t.data&&new Date(t.data+'T12:00')<ps&&!t.isCofrinho&&!t.isTransfer;}).reduce(function(a,t){return t.tipo==='entrada'?a+t.val:t.tipo==='saida'&&t.pago?a-t.val:a;},0);var tE=txs.filter(function(t){return t.tipo==='entrada';}).reduce(function(a,t){return a+t.val;},0),tS=txs.filter(function(t){return t.tipo==='saida'&&t.pago;}).reduce(function(a,t){return a+t.val;},0),sf=si+tE-tS;tH='<table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Valor</th></tr></thead><tbody>'+txs.map(function(t){var cat=getCat(t.cat),d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}):'—',tp=t.tipo==='entrada'?'Ganho':'Gasto',cl=t.tipo==='entrada'?'pos':'neg';return '<tr><td>'+d+'</td><td>'+t.desc+'</td><td>'+cat.emoji+' '+cat.nome+'</td><td>'+tp+'</td><td class="'+cl+'">'+(t.tipo==='entrada'?'+':'−')+fp(t.val)+'</td></tr>';}).join('')+'</tbody></table>';rH2='<div class="res">'+(ba?'<div class="rrow"><span>Conta</span><span>'+ba.nome+'</span></div>':'')+'<div class="rrow"><span>Saldo inicial</span><span class="'+(si>=0?'pos':'neg')+'">'+fp(si)+'</span></div><div class="rrow"><span>Total Ganhos</span><span class="pos">+'+fp(tE)+'</span></div><div class="rrow"><span>Total Gastos</span><span class="neg">−'+fp(tS)+'</span></div><div class="rrow rtot"><span>Saldo Final</span><span class="'+(sf>=0?'pos':'neg')+'">'+(sf>=0?'+':'−')+fp(Math.abs(sf))+'</span></div></div>';}
-  else{title='Fatura de Crédito';var cf=(getEl('cred-card-filter')||{value:''}).value,txsC=filterByMonthYear(credTxs,selM,selY).filter(function(t){return !cf||String(t.cartao)===cf;}).sort(function(a,b){return (a.data||'').localeCompare(b.data||'');});var tG=txsC.filter(function(t){return !t.estornado&&t.tipo!=='estorno';}).reduce(function(a,t){return a+t.val;},0),tEst=txsC.filter(function(t){return t.estornado||t.tipo==='estorno';}).reduce(function(a,t){return a+t.val;},0);tH='<table><thead><tr><th>Data</th><th>Descrição</th><th>Valor</th><th>Tipo</th></tr></thead><tbody>'+txsC.map(function(t){var d=t.data?new Date(t.data+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}):'—',isE=t.estornado||t.tipo==='estorno';return '<tr><td>'+d+'</td><td>'+(isE?'[Est] ':'')+t.desc+'</td><td class="'+(isE?'pos':'neg')+'">'+(isE?'+':'−')+fp(t.val)+'</td><td>'+(isE?'Estorno':'Gasto')+'</td></tr>';}).join('')+'</tbody></table>';rH2='<div class="res"><div class="rrow"><span>Total Gastos</span><span class="neg">'+fp(tG)+'</span></div><div class="rrow"><span>Total Estornos</span><span class="pos">+'+fp(tEst)+'</span></div><div class="rrow rtot"><span>Total Fatura</span><span class="neg">'+fp(Math.max(0,tG-tEst))+'</span></div></div>';}
-  var body='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin</title><style>'+css+'</style></head><body><div class="logo">gabi.fin</div><div class="periodo">'+title+' \u00b7 '+mn+'</div><div class="titulo">Lançamentos</div>'+tH+'<div class="titulo">Resumo</div>'+rH2+'<scr'+'ipt>window.onload=function(){window.print();}<\/scr'+'ipt></body></html>';
 
-var win=window.open(’’,’_blank’);if(!win){alert(‘Permita pop-ups.’);return;}win.document.write(body);win.document.close();
-};
 
 // showApp: calls buildDaySel + buildCredVencSel + renderAll
 window.showApp = function(){
-sessionStorage.setItem(‘gf2_session’,‘1’);
-var nome=localStorage.getItem(‘gf2_user_name’)||’’,sobre=localStorage.getItem(‘gf2_user_sobre’)||’’;
-var ls=getEl(‘loginscreen’);if(ls){ls.style.opacity=‘0’;setTimeout(function(){ls.style.display=‘none’;},400);}
-var ap=getEl(‘app’);if(ap)ap.style.opacity=‘0’;
-buildPeriodPicker(‘cred-month-sel’,‘cred-year-sel’,credPeriod);
-buildPeriodPicker(‘deb-month-sel’,‘deb-year-sel’,debPeriod);
-buildPeriodPicker(‘anal-month-sel’,‘anal-year-sel’,analPeriod);
-buildDaySel(‘cred-day-sel’);buildDaySel(‘deb-day-sel’);buildCredVencSel();
-renderAll();
-if(nome)updateHeaderName(nome,sobre);
-if(ap){ap.style.display=‘flex’;setTimeout(function(){ap.style.opacity=‘1’;},30);}
+  sessionStorage.setItem('gf2_session','1');
+  var nome=localStorage.getItem('gf2_user_name')||'',sobre=localStorage.getItem('gf2_user_sobre')||'';
+  var ls=getEl('loginscreen');if(ls){ls.style.opacity='0';setTimeout(function(){ls.style.display='none';},400);}
+  var ap=getEl('app');if(ap)ap.style.opacity='0';
+  buildPeriodPicker('cred-month-sel','cred-year-sel',credPeriod);
+  buildPeriodPicker('deb-month-sel','deb-year-sel',debPeriod);
+  buildPeriodPicker('anal-month-sel','anal-year-sel',analPeriod);
+  buildDaySel('cred-day-sel');buildDaySel('deb-day-sel');buildCredVencSel();
+  renderAll();
+  if(nome)updateHeaderName(nome,sobre);
+  if(ap){ap.style.display='flex';setTimeout(function(){ap.style.opacity='1';},30);}
 };
 
 // DOMContentLoaded: single init (inject cat-tipo-hidden)
-document.addEventListener(‘DOMContentLoaded’,function(){
-var mc=document.getElementById(‘m-cat’);
-if(mc&&!document.getElementById(‘cat-tipo-hidden’)){var inp=document.createElement(‘input’);inp.type=‘hidden’;inp.id=‘cat-tipo-hidden’;inp.value=‘gasto’;mc.querySelector(’.msheet’).appendChild(inp);}
+document.addEventListener('DOMContentLoaded',function(){
+  var mc=document.getElementById('m-cat');
+  if(mc&&!document.getElementById('cat-tipo-hidden')){var inp=document.createElement('input');inp.type='hidden';inp.id='cat-tipo-hidden';inp.value='gasto';mc.querySelector('.msheet').appendChild(inp);}
 });
 
 // ── renderAll: rebuild filters after each render ──────────────
 var _baseRA = window.renderAll;
 window.renderAll = function() {
-_baseRA();
-buildBancoFilter();
-buildCardFilter();
-buildCatFilters();
-var uEl=getEl(‘anal-uso-filter’);
-if(uEl){var cur=uEl.value;uEl.innerHTML=’<option value="">Todos</option>’+usos.map(function(u){return ‘<option value="'+u.id+'">’+u.nome+’</option>’;}).join(’’);if(cur)uEl.value=cur;}
+  _baseRA();
+  buildBancoFilter();
+  buildCardFilter();
+  buildCatFilters();
+  var uEl=getEl('anal-uso-filter');
+  if(uEl){var cur=uEl.value;uEl.innerHTML='<option value="">Todos</option>'+usos.map(function(u){return '<option value="'+u.id+'">'+u.nome+'</option>';}).join('');if(cur)uEl.value=cur;}
+};
+
+// ── v20 CLEAN: showApp without auth ──────────────
+window.showApp = function() {
+  var nome  = localStorage.getItem('gf2_user_name')  || 'Gabriela';
+  var sobre = localStorage.getItem('gf2_user_sobre') || 'Martines';
+  buildPeriodPicker('cred-month-sel','cred-year-sel', credPeriod);
+  buildPeriodPicker('deb-month-sel','deb-year-sel',   debPeriod);
+  buildPeriodPicker('anal-month-sel','anal-year-sel', analPeriod);
+  if(typeof buildDaySel==='function'){buildDaySel('cred-day-sel');buildDaySel('deb-day-sel');}
+  if(typeof buildCredVencSel==='function') buildCredVencSel();
+  renderAll();
+  updateHeaderName(nome, sobre);
+  var ap = getEl('app');
+  if(ap){ ap.style.display='flex'; ap.style.opacity='1'; }
+};
+
+window.updateHeaderName = function(nome, sobre) {
+  var nEl=getEl('hdr-nome-inicio');
+  var sEl=getEl('hdr-sobrenome-inicio');
+  if(nEl){ nEl.textContent=nome; nEl.style.cssText='color:#f1f0ff;-webkit-text-fill-color:#f1f0ff;background:none;font-weight:600'; }
+  if(sEl){ sEl.textContent=sobre; sEl.style.cssText='background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600'; }
 };
 
 </script>
+
 </body>
 </html>
