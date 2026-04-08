@@ -3030,9 +3030,7 @@ function doLogin() {
 }
 
 // Enter key support for login
-document.addEventListener('DOMContentLoaded', function() {
-  var ls = getEl('ls-senha');
-  if (ls) ls.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+
   var ob2 = getEl('ob-senha2');
   if (ob2) ob2.addEventListener('keydown', function(e){ if(e.key==='Enter') saveOnboard(); });
 });
@@ -4423,11 +4421,7 @@ window.updateHeaderName = function(nome, sobre) {
 // INIT: build day selects on boot
 // ══════════════════════════════════════════════════════
 var _origBoot2 = window.onload;
-document.addEventListener('DOMContentLoaded', function(){
-  buildDaySel('cred-day-sel');
-  buildDaySel('deb-day-sel');
-  buildCredVencSel();
-});
+
 
 
 // ══════════════════════════════════════════════════════
@@ -5333,14 +5327,7 @@ window.marcarFaturaPaga = function(ids) {
 window.selDebType = function(tipo, el) { curDebType=tipo; };
 
 // DOMContentLoaded init
-document.addEventListener('DOMContentLoaded', function(){
-  buildDaySel('cred-day-sel');
-  buildDaySel('deb-day-sel');
-  buildCredVencSel();
-  // pre-select saida on deb modal open
-  var tipoEl=getEl('deb-tipo-sel');
-  if(tipoEl) tipoEl.value='saida';
-});
+
 
 
 // ══════════════════════════════════════════════════════
@@ -5666,17 +5653,7 @@ function confirmarPagamentoFatura() {
 // ══════════════════════════════════════════════════════
 // INJECT hidden tipo field into cat modal (needed for saveCat)
 // ══════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded',function(){
-  var mcat=document.getElementById('m-cat');
-  if(mcat&&!document.getElementById('cat-tipo-hidden')){
-    var inp=document.createElement('input');
-    inp.type='hidden'; inp.id='cat-tipo-hidden'; inp.value='gasto';
-    mcat.querySelector('.msheet').appendChild(inp);
-  }
-  // Also rebuild cat selects with tipo context
-  if(typeof buildDaySel==='function'){buildDaySel('cred-day-sel');buildDaySel('deb-day-sel');}
-  if(typeof buildCredVencSel==='function') buildCredVencSel();
-});
+
 
 // ══════════════════════════════════════════════════════
 // PATCH renderDebStats — exclude isFaturaPag from "saidas pagas" double-count
@@ -5895,7 +5872,7 @@ function exportPDF(aba) {
 tableHTML+
 '<div class="titulo">Resumo</div>'+
 resumoHTML+
-'<script>window.onload=function(){window.print();}<\/script>'+
+'<scr'+'ipt>window.onload=function(){window.print();}<\/scr'+'ipt>'+
 ```
 
 ‘</body></html>’;
@@ -6219,7 +6196,7 @@ var bodyHTML=’<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin
 ‘<div class="periodo">’+tituloAba+’ · ‘+mesNome+’</div>’+
 ‘<div class="titulo">Lançamentos</div>’+tableHTML+
 ‘<div class="titulo">Resumo</div>’+resumoHTML+
-‘<script>window.onload=function(){window.print();}</script>’+
+‘<scr’+‘ipt>window.onload=function(){window.print();}</scr’+‘ipt>’+
 ‘</body></html>’;
 
 var win=window.open(’’,’_blank’);
@@ -6435,18 +6412,6 @@ if(getEl(‘insights-wrap’)) getEl(‘insights-wrap’).innerHTML=
 // ══════════════════════════════════════════════════════
 // v17.3 — renderAll: populate uso filter after building usos
 // ══════════════════════════════════════════════════════
-var _origRenderAll_v17 = window.renderAll;
-window.renderAll = function() {
-if(typeof _origRenderAll_v17===‘function’) _origRenderAll_v17();
-// Keep uso filter populated
-var usoFilterEl=getEl(‘anal-uso-filter’);
-if(usoFilterEl){
-var cur=usoFilterEl.value;
-usoFilterEl.innerHTML=’<option value="">Todos</option>’+
-usos.map(function(u){return ‘<option value="'+u.id+'">’+u.nome+’</option>’;}).join(’’);
-if(cur) usoFilterEl.value=cur;
-}
-};
 
 // ═══════════════════════════════════════════════════════════════
 // v18 — ALL PATCHES
@@ -7298,7 +7263,7 @@ var bodyHTML=’<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin
 ‘<div class="periodo">’+tituloAba+’ · ‘+mesNome+’</div>’+
 ‘<div class="titulo">Lançamentos</div>’+tableHTML+
 ‘<div class="titulo">Resumo</div>’+resumoHTML+
-‘<script>window.onload=function(){window.print();}</script>’+
+‘<scr’+‘ipt>window.onload=function(){window.print();}</scr’+‘ipt>’+
 ‘</body></html>’;
 var win=window.open(’’,’_blank’);
 if(!win){alert(‘Permita pop-ups para exportar PDF.’);return;}
@@ -7306,11 +7271,6 @@ win.document.write(bodyHTML); win.document.close();
 };
 
 // ── v19 — renderAll: always rebuild banco + card filters ──────
-var _origRenderAll_v19 = window.renderAll;
-window.renderAll = function() {
-if(typeof _origRenderAll_v19===‘function’) _origRenderAll_v19();
-setTimeout(function(){ buildBancoFilter(); buildCardFilter(); buildCatFilters(); },50);
-};
 
 // ══════════════════════════════════════════════════════════════
 // v20 PATCHES
@@ -7688,11 +7648,47 @@ if(getEl(‘insights-wrap’)) getEl(‘insights-wrap’).innerHTML=
 window.isInternalTx = function(t){ return !!(t.isCofrinho||t.isTransfer); };
 
 // ── Refresh on renderAll ──────────────────────────────────────
-var _origRenderAll_v20 = window.renderAll;
+
+// ── Single renderAll post-hook (v20 final) ───────────────────
+(function(){
+var _origRA = window.renderAll;
 window.renderAll = function() {
-if(typeof _origRenderAll_v20===‘function’) _origRenderAll_v20();
-setTimeout(function(){ buildBancoFilter(); buildCardFilter(); buildCatFilters(); },50);
+if(typeof _origRA===‘function’) _origRA();
+setTimeout(function(){
+if(typeof buildBancoFilter===‘function’) buildBancoFilter();
+if(typeof buildCardFilter===‘function’)  buildCardFilter();
+if(typeof buildCatFilters===‘function’)  buildCatFilters();
+// Keep uso filter populated
+var usoEl=getEl(‘anal-uso-filter’);
+if(usoEl&&typeof usos!==‘undefined’){
+var cur=usoEl.value;
+usoEl.innerHTML=’<option value="">Todos</option>’+
+usos.map(function(u){return ‘<option value="'+u.id+'">’+u.nome+’</option>’;}).join(’’);
+if(cur) usoEl.value=cur;
+}
+},50);
 };
+})();
+
+// ── renderAll post-hook v20 (single, clean) ──────────────────
+(function(){
+var _baseRA = window.renderAll;
+window.renderAll = function() {
+if(typeof _baseRA===‘function’) _baseRA();
+setTimeout(function(){
+if(typeof buildBancoFilter===‘function’) buildBancoFilter();
+if(typeof buildCardFilter===‘function’)  buildCardFilter();
+if(typeof buildCatFilters===‘function’)  buildCatFilters();
+var usoEl=getEl(‘anal-uso-filter’);
+if(usoEl&&typeof usos!==‘undefined’){
+var cur=usoEl.value;
+usoEl.innerHTML=’<option value="">Todos</option>’+
+usos.map(function(u){return ‘<option value="'+u.id+'">’+u.nome+’</option>’;}).join(’’);
+if(cur) usoEl.value=cur;
+}
+},50);
+};
+})();
 
 </script>
 </body>
