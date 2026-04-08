@@ -575,10 +575,7 @@ background-clip:text;display:inline-block
     <div style="display:none">
       <div id="h-entra">0</div><div id="h-cred">0</div><div id="h-deb">0</div><div id="h-cofre">0</div>
     </div>
-    <div style="text-align:center;margin-top:6px">
-      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">Saldo em débito</div>
-      <div style="font-size:18px;font-weight:700" id="h-saldo-deb" style="color:var(--green)">R$ 0,00</div>
-    </div>
+
   </div>
 
   <!-- CONTAS A VENCER -->
@@ -7335,8 +7332,6 @@ var saldoDeb = totalEnt - totalSai;
 // Update main saldo (keep for compat) and new saldo-deb element
 var sEl = getEl(‘h-saldo’);
 if(sEl){ sEl.className=‘bal-val ‘+(saldoDeb>=0?‘pos’:‘neg’); sEl.textContent=(saldoDeb<0?’-’:’’)+fmt(Math.abs(saldoDeb)); }
-var sdEl = getEl(‘h-saldo-deb’);
-if(sdEl){ sdEl.style.color=saldoDeb>=0?‘var(–green)’:‘var(–red)’; sdEl.textContent=(saldoDeb<0?’-’:’’)+fmt(Math.abs(saldoDeb)); }
 
 // Health score based on ratio
 var entraTotal=debTxs.filter(function(t){return t.tipo===‘entrada’&&isPersonal(t);}).reduce(function(a,t){return a+t.val;},0);
