@@ -32,13 +32,14 @@
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
 
 /* SPLASH */
-#splash{position:fixed;inset:0;background:var(–bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease}
+#splash{position:fixed;inset:0;background:var(–bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:splashHide 0.5s ease 1.8s forwards}
 .splash-bg{position:absolute;inset:0;overflow:hidden}
 .splash-orb{position:absolute;border-radius:50%;filter:blur(55px);animation:orbF 3s ease-in-out infinite}
 .orb1{width:280px;height:280px;background:radial-gradient(circle,rgba(139,92,246,.5),transparent 70%);top:-70px;left:-70px}
 .orb2{width:240px;height:240px;background:radial-gradient(circle,rgba(236,72,153,.4),transparent 70%);bottom:-60px;right:-60px;animation-delay:.8s}
 .orb3{width:180px;height:180px;background:radial-gradient(circle,rgba(59,130,246,.3),transparent 70%);top:40%;left:35%;animation-delay:1.4s}
 @keyframes orbF{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8px,-10px) scale(1.06)}}
+@keyframes splashHide{0%{opacity:1;pointer-events:all}100%{opacity:0;pointer-events:none;display:none}}
 .splash-c{position:relative;z-index:1;text-align:center}
 .splash-logo{font-family:‘Syne’,sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .splash-tag{font-size:12px;color:var(–text3);letter-spacing:3px;text-transform:uppercase;margin-top:8px}
@@ -47,7 +48,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 @keyframes loadB{to{width:100%}}
 
 /* APP */
-#app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity .4s ease}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:1}
 .safe-top{height:var(–safe-top);background:var(–bg);flex-shrink:0}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(80px + var(–safe-bot))}
 .scroll::-webkit-scrollbar{display:none}
@@ -391,7 +392,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
 /* GITHUB/BROWSER COMPAT FIXES */
 html,body{height:100%;height:100dvh;overflow:hidden}
-#app{position:fixed;inset:0;display:flex;flex-direction:column}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:1}
 .safe-top{height:env(safe-area-inset-top,0px);min-height:0;background:var(–bg);flex-shrink:0}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
 padding-top:4px;
@@ -2462,19 +2463,26 @@ function renderAll() {
 
 // ═══ BOOT ══════════════════════════════════════
 (function boot() {
+  // Monta os seletores de período
   buildPeriodPicker('cred-month-sel','cred-year-sel', credPeriod);
   buildPeriodPicker('deb-month-sel','deb-year-sel',   debPeriod);
   buildPeriodPicker('anal-month-sel','anal-year-sel', analPeriod);
 
-  var _n=localStorage.getItem('gf2_user_name')||'';
-  var _s=localStorage.getItem('gf2_user_sobre')||'';
-  var _w=getEl('splash-welcome');
-  if(_w&&_n) _w.textContent='Bem-vinda, '+_n+(_s?' '+_s:'')+' 👋';
-  setTimeout(function(){
-    var sp=getEl('splash');
-    if(sp){sp.style.opacity='0';setTimeout(function(){sp.style.display='none';},400);}
-    showApp();
-  },1800);
+  // Mostra nome no splash
+  var nome  = localStorage.getItem('gf2_user_name')  || '';
+  var sobre = localStorage.getItem('gf2_user_sobre') || '';
+  var wEl = getEl('splash-welcome');
+  if (wEl && nome) wEl.textContent = 'Bem-vinda, ' + nome + (sobre ? ' ' + sobre : '') + '! 👋';
+
+  // O app já está visível (opacity:1 no CSS)
+  // Renderiza os dados depois do splash (2s = tempo do CSS animation)
+  setTimeout(function() {
+    try { buildDaySel('cred-day-sel'); } catch(e){}
+    try { buildDaySel('deb-day-sel'); } catch(e){}
+    try { buildCredVencSel(); } catch(e){}
+    try { renderAll(); } catch(e){ console.error(e); }
+    try { updateHeaderName(nome, sobre); } catch(e){}
+  }, 2000);
 })();
 
 // ═══ METAS DE ALOCAÇÃO DO COFRINHO ═════════════════════════════════
