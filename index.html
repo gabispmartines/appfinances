@@ -39,7 +39,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .orb2{width:240px;height:240px;background:radial-gradient(circle,rgba(236,72,153,.4),transparent 70%);bottom:-60px;right:-60px;animation-delay:.8s}
 .orb3{width:180px;height:180px;background:radial-gradient(circle,rgba(59,130,246,.3),transparent 70%);top:40%;left:35%;animation-delay:1.4s}
 @keyframes orbF{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8px,-10px) scale(1.06)}}
-@keyframes splashHide{0%{opacity:1;pointer-events:all}100%{opacity:0;pointer-events:none;display:none}}
+@keyframes splashHide{0%{opacity:1}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
 .splash-c{position:relative;z-index:1;text-align:center}
 .splash-logo{font-family:‘Syne’,sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .splash-tag{font-size:12px;color:var(–text3);letter-spacing:3px;text-transform:uppercase;margin-top:8px}
@@ -2475,14 +2475,19 @@ function renderAll() {
   if (wEl && nome) wEl.textContent = 'Bem-vinda, ' + nome + (sobre ? ' ' + sobre : '') + '! 👋';
 
   // O app já está visível (opacity:1 no CSS)
-  // Renderiza os dados depois do splash (2s = tempo do CSS animation)
+  // Remove o splash e renderiza após 1.8s
   setTimeout(function() {
+    // Remove o splash do DOM de vez (garante que não bloqueia toques)
+    var sp = getEl('splash');
+    if (sp) sp.parentNode.removeChild(sp);
+
+    // Renderiza os dados
     try { buildDaySel('cred-day-sel'); } catch(e){}
     try { buildDaySel('deb-day-sel'); } catch(e){}
     try { buildCredVencSel(); } catch(e){}
     try { renderAll(); } catch(e){ console.error(e); }
     try { updateHeaderName(nome, sobre); } catch(e){}
-  }, 2000);
+  }, 1800);
 })();
 
 // ═══ METAS DE ALOCAÇÃO DO COFRINHO ═════════════════════════════════
