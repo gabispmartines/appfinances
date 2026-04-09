@@ -3046,16 +3046,17 @@ window.saveOnboard = function() {
   showApp();
 };
 
-// ═══ PATCH: showApp updates header with nome/sobrenome ═══
-var _origShowApp = window.showApp;
+// ═══ showApp — abre o app direto ═══
 window.showApp = function() {
-  sessionStorage.setItem('gf2_session','1');
-  try { renderAll(); } catch(e) { console.error(e); }
-  var nome  = localStorage.getItem('gf2_user_name') || '';
-  var sobre = localStorage.getItem('gf2_user_sobre') || '';
+  var nome  = localStorage.getItem('gf2_user_name')  || 'Gabriela';
+  var sobre = localStorage.getItem('gf2_user_sobre') || 'Martines';
+  buildDaySel('cred-day-sel');
+  buildDaySel('deb-day-sel');
+  buildCredVencSel();
+  try { renderAll(); } catch(e) { console.error('renderAll:', e); }
   updateHeaderName(nome, sobre);
   var ap = getEl('app');
-  if (ap) ap.style.opacity='1';
+  if (ap) { ap.style.display = 'flex'; ap.style.opacity = '1'; }
 };
 
 function updateHeaderName(nome, sobre) {
@@ -5160,15 +5161,14 @@ window.updateHeaderName = function(nome, sobre) {
   if(sEl){ sEl.textContent=sobre; sEl.style.cssText='background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700'; }
 };
 
-// Ensure showApp always restores the name
-var _origShowApp_v12 = window.showApp;
+// showApp — versão final, abre o app sem senha
 window.showApp = function() {
-  sessionStorage.setItem('gf2_session','1');
   try { renderAll(); } catch(e){ console.error(e); }
-  var nome=localStorage.getItem('gf2_user_name')||'';
-  var sobre=localStorage.getItem('gf2_user_sobre')||'';
-  if(nome) updateHeaderName(nome,sobre);
-  var ap=getEl('app'); if(ap) ap.style.opacity='1';
+  var nome  = localStorage.getItem('gf2_user_name')  || 'Gabriela';
+  var sobre = localStorage.getItem('gf2_user_sobre') || 'Martines';
+  updateHeaderName(nome, sobre);
+  var ap = getEl('app');
+  if (ap) { ap.style.display = 'flex'; ap.style.opacity = '1'; }
 };
 
 // ══════════════════════════════════════════════════════
