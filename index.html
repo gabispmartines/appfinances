@@ -7294,7 +7294,7 @@ window.renderAll = function() {
 // ══════════════════════════════════════════════════════════════
 
 // ── AJUSTE 1: BRANDING — substituir "gabi.fin" por imagem logo em todas as telas visuais
-// A splash e telas usam imagem de arquivo local "Icon inicio.png"
+// A splash e telas usam imagem de arquivo local "icon inicio.png"
 // Aplicado via CSS e DOM patches abaixo.
 
 // Substituir splash-logo pelo logo imagem
@@ -7303,7 +7303,7 @@ window.renderAll = function() {
   if (el) {
     el.innerHTML = '';
     var img = document.createElement('img');
-    img.src = 'Icon inicio.png';
+    img.src = 'icon inicio.png';
     img.alt = 'Flokis';
     img.style.cssText = 'height:72px;max-width:220px;object-fit:contain;display:block;margin:0 auto';
     img.onerror = function(){ el.textContent = 'Flokis'; el.style.cssText='font-family:\'Syne\',sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text'; };
@@ -7318,19 +7318,19 @@ window.renderAll = function() {
     var headers = document.querySelectorAll('#tab-inicio .hdr div[style*="font-size:32px"], #tab-inicio .hdr div[style*="font-size: 32px"]');
     headers.forEach(function(el) {
       if(el.textContent.trim() === 'gabi.fin') {
-        el.innerHTML = '<img src="Icon inicio.png" alt="Flokis" style="height:44px;max-width:160px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">';
+        el.innerHTML = '<img src="icon inicio.png" alt="Flokis" style="height:44px;max-width:160px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">';
       }
     });
     // Onboarding logo
     var obLogo = document.querySelector('.ob-logo');
     if (obLogo) {
-      obLogo.innerHTML = '<img src="Icon inicio.png" alt="Flokis" style="height:64px;max-width:200px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">';
+      obLogo.innerHTML = '<img src="icon inicio.png" alt="Flokis" style="height:64px;max-width:200px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">';
       obLogo.style.cssText = 'text-align:center;margin-bottom:6px';
     }
     // Login screen logo
     var lsLogo = document.querySelector('.ls-logo');
     if (lsLogo) {
-      lsLogo.innerHTML = '<img src="Icon inicio.png" alt="Flokis" style="height:60px;max-width:190px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">';
+      lsLogo.innerHTML = '<img src="icon inicio.png" alt="Flokis" style="height:60px;max-width:190px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">';
       lsLogo.style.cssText = 'text-align:center;margin-bottom:6px';
     }
   });
