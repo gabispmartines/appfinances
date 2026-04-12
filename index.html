@@ -7336,13 +7336,13 @@ window.renderAll = function() {
   });
 })();
 
-// Favicon usando Icon app.jpg
+// Favicon usando Icon app.jpg.jpg
 (function patchFavicon() {
   var link = document.querySelector('link[rel="apple-touch-icon"]');
-  if (link) link.href = 'Icon app.jpg';
+  if (link) link.href = 'Icon app.jpg.jpg';
   var favicon = document.createElement('link');
   favicon.rel = 'icon';
-  favicon.href = 'Icon app.jpg';
+  favicon.href = 'Icon app.jpg.jpg';
   document.head.appendChild(favicon);
   // PWA title
   var titleEl = document.querySelector('title');
