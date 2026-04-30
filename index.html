@@ -469,272 +469,7 @@ background-clip:text;display:inline-block
 }
 .hdr-greet{font-size:11px;color:var(–text2);margin-bottom:1px}
 
-/* ═══════════════════════════════════════════════
-FLOKIS — LOGIN / SPLASH VISUAL REFINEMENT
-Preto + cinza, minimalista, premium
-Escopo: apenas #splash, #loginscreen, #onboard
-═══════════════════════════════════════════════ */
-
-/* ── SPLASH ── */
-#splash {
-background: #000 !important;
-}
-#splash .splash-bg { display: none !important; } /* remove orbs coloridos */
-.splash-c {
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 0;
-padding: 0 32px;
-}
-.splash-logo {
-/* reset gradient text */
-background: none !important;
--webkit-background-clip: unset !important;
--webkit-text-fill-color: #fff !important;
-background-clip: unset !important;
-color: #fff !important;
-font-size: clamp(60px, 18vw, 84px) !important;
-letter-spacing: -4px !important;
-filter: none !important;
-animation: none !important;
-/* Se for imagem, tamanho será controlado abaixo */
-}
-.splash-logo img {
-width: clamp(150px, 45vw, 200px) !important;
-height: auto !important;
-max-height: 180px !important;
-object-fit: contain !important;
-filter: brightness(1.05) !important;
-animation: none !important;
-margin: 0 auto;
-display: block;
-}
-.splash-tag {
-font-size: 11px !important;
-color: #555 !important;
-letter-spacing: 3px !important;
-text-transform: uppercase;
-font-weight: 400;
-margin-top: 14px;
-}
-.splash-bar {
-width: 48px;
-height: 1.5px;
-background: #1a1a1a;
-margin: 40px auto 0;
-}
-.splash-prog {
-background: #ffffff !important;
-height: 1.5px;
-border-radius: 2px;
-}
-
-/* ── LOGIN SCREEN ── */
-#loginscreen {
-background: #000 !important;
-padding: 0 28px;
-gap: 0;
-}
-/* Remover orbs coloridos */
-#loginscreen .ob-bg { display: none !important; }
-
-.ls-inner {
-width: 100%;
-max-width: 360px;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 0;
-}
-
-/* Logo */
-.ls-logo {
-background: none !important;
--webkit-background-clip: unset !important;
--webkit-text-fill-color: #fff !important;
-background-clip: unset !important;
-color: #fff !important;
-font-size: clamp(56px, 16vw, 76px) !important;
-letter-spacing: -4px !important;
-text-align: center;
-margin-bottom: 10px;
-filter: none !important;
-}
-.ls-logo img {
-width: clamp(150px, 44vw, 195px) !important;
-height: auto !important;
-max-height: 170px !important;
-object-fit: contain !important;
-filter: brightness(1.05) !important;
-display: block;
-margin: 0 auto 10px;
-}
-
-/* Tag */
-.ls-tag {
-font-size: 11px !important;
-color: #555 !important;
-letter-spacing: 3px !important;
-text-transform: uppercase;
-font-weight: 400;
-margin-bottom: 36px !important;
-text-align: center;
-}
-
-/* Boas-vindas */
-.ls-welcome {
-font-size: 15px !important;
-color: #888 !important;
-text-align: center;
-margin-bottom: 28px !important;
-line-height: 1.55;
-font-weight: 400;
-}
-.ls-welcome b, .ls-welcome strong {
-color: #f0f0f0 !important;
-font-weight: 600;
--webkit-text-fill-color: #f0f0f0 !important;
-background: none !important;
--webkit-background-clip: unset !important;
-background-clip: unset !important;
-}
-/* sobrenome — também sem gradiente */
-.ls-welcome .ls-sobre {
-color: #f0f0f0 !important;
--webkit-text-fill-color: #f0f0f0 !important;
-background: none !important;
--webkit-background-clip: unset !important;
-background-clip: unset !important;
-font-weight: 600;
-}
-
-/* Card */
-.ls-card {
-background: #111 !important;
-border: 1px solid #222 !important;
-border-radius: 20px !important;
-padding: 24px 20px !important;
-width: 100%;
-box-shadow: none !important;
-}
-
-/* Label senha */
-.ls-lbl {
-font-size: 10px !important;
-color: #555 !important;
-text-transform: uppercase;
-letter-spacing: 1px;
-margin-bottom: 8px;
-}
-
-/* Input senha */
-.ls-inp {
-background: #0a0a0a !important;
-border: 1px solid #2a2a2a !important;
-border-radius: 12px !important;
-color: #f0f0f0 !important;
-font-size: 16px !important;
-padding: 14px 16px !important;
-margin-bottom: 14px !important;
-transition: border-color 0.2s !important;
-box-shadow: none !important;
-}
-.ls-inp::placeholder { color: #3a3a3a !important; }
-.ls-inp:focus {
-border-color: #444 !important;
-box-shadow: none !important;
-outline: none !important;
-}
-
-/* Erro */
-.ls-err {
-color: #888 !important;
-font-size: 12px;
-margin-bottom: 10px;
-}
-
-/* Botão entrar — branco sobre preto */
-.ls-btn {
-background: #fff !important;
-color: #000 !important;
-border: none !important;
-border-radius: 12px !important;
-font-size: 15px !important;
-font-weight: 700 !important;
-letter-spacing: 0.2px;
-padding: 15px !important;
-box-shadow: none !important;
-transition: opacity 0.2s, transform 0.15s !important;
-}
-.ls-btn:active {
-opacity: 0.88 !important;
-transform: scale(0.98) !important;
-}
-
-/* ── ONBOARDING — também sem orbs coloridos ── */
-#onboard {
-background: #000 !important;
-}
-#onboard .ob-bg { display: none !important; }
-.ob-logo {
-background: none !important;
--webkit-background-clip: unset !important;
--webkit-text-fill-color: #fff !important;
-background-clip: unset !important;
-color: #fff !important;
-font-size: clamp(52px, 16vw, 72px) !important;
-}
-.ob-logo img {
-width: clamp(140px, 42vw, 185px) !important;
-height: auto !important;
-object-fit: contain !important;
-filter: brightness(1.05) !important;
-display: block;
-margin: 0 auto;
-}
-.ob-tag {
-font-size: 11px !important;
-color: #555 !important;
-letter-spacing: 3px !important;
-}
-.ob-card {
-background: #111 !important;
-border: 1px solid #222 !important;
-border-radius: 20px !important;
-box-shadow: none !important;
-}
-.ob-inp {
-background: #0a0a0a !important;
-border: 1px solid #2a2a2a !important;
-border-radius: 12px !important;
-color: #f0f0f0 !important;
-font-size: 16px !important;
-transition: border-color 0.2s !important;
-}
-.ob-inp::placeholder { color: #3a3a3a !important; }
-.ob-inp:focus {
-border-color: #444 !important;
-box-shadow: none !important;
-}
-.ob-btn {
-background: #fff !important;
-color: #000 !important;
-border: none !important;
-border-radius: 12px !important;
-font-weight: 700 !important;
-box-shadow: none !important;
-transition: opacity 0.2s, transform 0.15s !important;
-}
-.ob-btn:active { opacity: 0.88 !important; transform: scale(0.98) !important; }
-.ob-lbl { color: #555 !important; }
-.ob-step-lbl { color: #666 !important; }
-.ob-title { color: #f0f0f0 !important; }
-.ob-sub { color: #666 !important; }
-.ob-err { color: #888 !important; }
-
 </style>
-
 </head>
 <body>
 
@@ -779,7 +514,7 @@ transition: opacity 0.2s, transform 0.15s !important;
   <div class="ls-inner">
     <div class="ls-logo">gabi.fin</div>
     <div class="ls-tag">controle financeiro pessoal</div>
-    <div class="ls-welcome" id="ls-welcome-txt">Bem-vinda de volta!</div>
+    <div class="ls-welcome" id="ls-welcome-txt">Bem-vinda de volta! 👋</div>
     <div class="ls-card">
       <div class="ls-lbl">Senha</div>
       <input class="ls-inp" id="ls-senha" type="password" placeholder="Digite sua senha" autocomplete="current-password">
@@ -3246,7 +2981,7 @@ function checkAuth() {
     ls.classList.remove('hidden');
     ls.style.opacity='1';
     var wt = getEl('ls-welcome-txt');
-    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>' + name + '</b>.';
+    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>' + name + '</b>! 👋';
     setTimeout(function(){ var si = getEl('ls-senha'); if(si) si.focus(); }, 300);
   }
   return false;
@@ -3433,10 +3168,10 @@ function fallbackCopy(txt) {
 
 // ═══ PATCH: ONBOARDING with nome + sobrenome ═══
 window.saveOnboard = function() {
-  var nome     = (getEl('ob-nome')?.value || '').trim();
-  var sobre    = (getEl('ob-sobrenome')?.value || '').trim();
-  var senha    = getEl('ob-senha')?.value || '';
-  var senha2   = getEl('ob-senha2')?.value || '';
+  var nome     = ((getEl('ob-nome') && getEl('ob-nome').value) || '').trim();
+  var sobre    = ((getEl('ob-sobrenome') && getEl('ob-sobrenome').value) || '').trim();
+  var senha    = (getEl('ob-senha') && getEl('ob-senha').value) || '';
+  var senha2   = (getEl('ob-senha2') && getEl('ob-senha2').value) || '';
   var nErr     = getEl('ob-nome-err');
   var sErr     = getEl('ob-senha-err');
   nErr.style.display = 'none';
@@ -3494,7 +3229,8 @@ window.checkAuth = function() {
     ls.style.opacity='1';
     var wt = getEl('ls-welcome-txt');
     if (wt) {
-      wt.innerHTML = 'Bem-vinda de volta, <b>' + name + (sobre ? ' <b>' + sobre + '</b>' : '') + '.';
+      wt.innerHTML = 'Bem-vinda de volta, <b>' + name + '</b>' +
+        (sobre ? ' <span style="background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700">' + sobre + '</span>' : '') + '! 👋';
     }
     setTimeout(function(){ var si=getEl('ls-senha'); if(si) si.focus(); }, 300);
   }
@@ -3507,7 +3243,7 @@ window.saveCard = function() {
   var id      = getEl('card-edit-id').value;
   var bancoEl = getEl('card-banco');
   var banco   = bancoEl.value === 'outro' ? getEl('card-banco-custom').value.trim() : bancoEl.value;
-  var holder  = (getEl('card-holder')?.value || '').trim().toUpperCase();
+  var holder  = ((getEl('card-holder') && getEl('card-holder').value) || '').trim().toUpperCase();
   var nome    = getEl('card-nome').value.trim() || banco;
   var obj = {
     id:       id ? parseInt(id) : Date.now(),
@@ -3586,7 +3322,7 @@ window.saveBiz = function() {
   var id      = getEl('biz-edit-id').value;
   var nome    = getEl('biz-nome').value.trim();
   var emoji   = getEl('biz-emoji').value.trim() || '💼';
-  var foto    = getEl('biz-foto')?.value?.trim() || '';
+  var foto    = (getEl('biz-foto') && getEl('biz-foto').value && getEl('biz-foto').value.trim()) || '';
   if (!nome) { alert('Informe o nome do negócio.'); return; }
   var obj = {
     id:       id ? parseInt(id) : Date.now(),
@@ -4721,7 +4457,8 @@ window.checkAuth = function() {
   if (ls) {
     ls.classList.remove('hidden'); ls.style.opacity='1';
     var wt = getEl('ls-welcome-txt');
-    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>'+name+(sobre ? ' <b>'+sobre+'</b>' : '')+'.';
+    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>'+name+'</b>' +
+      (sobre ? ' <span class="ls-sobre">'+sobre+'</span>' : '') + '! 👋';
     setTimeout(function(){ var si=getEl('ls-senha'); if(si) si.focus(); }, 300);
   }
   return false;
@@ -7590,13 +7327,10 @@ var el = document.querySelector(’.splash-logo’);
 if (el) {
 el.innerHTML = ‘’;
 var img = document.createElement(‘img’);
-img.src = ‘Icon inicio.png’;
+img.src = ‘icon inicio.png’;
 img.alt = ‘Flokis’;
-img.style.cssText = ‘width:clamp(150px,45vw,200px);height:auto;max-height:180px;object-fit:contain;display:block;margin:0 auto;filter:brightness(1.05)’;
-img.onerror = function(){
-el.style.cssText = ‘font-family:'Syne',sans-serif;font-size:clamp(60px,18vw,84px);font-weight:800;letter-spacing:-4px;color:#fff;-webkit-text-fill-color:#fff;background:none’;
-el.textContent = ‘Flokis’;
-};
+img.style.cssText = ‘height:72px;max-width:220px;object-fit:contain;display:block;margin:0 auto’;
+img.onerror = function(){ el.textContent = ‘Flokis’; el.style.cssText=‘font-family:'Syne',sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text’; };
 el.appendChild(img);
 }
 })();
@@ -7608,20 +7342,20 @@ document.addEventListener(‘DOMContentLoaded’, function() {
 var headers = document.querySelectorAll(’#tab-inicio .hdr div[style*=“font-size:32px”], #tab-inicio .hdr div[style*=“font-size: 32px”]’);
 headers.forEach(function(el) {
 if(el.textContent.trim() === ‘gabi.fin’) {
-el.innerHTML = ‘<img src="Icon inicio.png" alt="Flokis" style="height:44px;max-width:160px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
+el.innerHTML = ‘<img src="icon inicio.png" alt="Flokis" style="height:44px;max-width:160px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
 }
 });
 // Onboarding logo
 var obLogo = document.querySelector(’.ob-logo’);
 if (obLogo) {
-obLogo.innerHTML = ‘<img src="Icon inicio.png" alt="Flokis" style="width:clamp(140px,42vw,185px);height:auto;object-fit:contain;filter:brightness(1.05);display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
-obLogo.style.cssText = ‘text-align:center;margin-bottom:10px’;
+obLogo.innerHTML = ‘<img src="icon inicio.png" alt="Flokis" style="height:64px;max-width:200px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
+obLogo.style.cssText = ‘text-align:center;margin-bottom:6px’;
 }
 // Login screen logo
 var lsLogo = document.querySelector(’.ls-logo’);
 if (lsLogo) {
-lsLogo.innerHTML = ‘<img src="Icon inicio.png" alt="Flokis" style="width:clamp(150px,44vw,195px);height:auto;max-height:170px;object-fit:contain;filter:brightness(1.05);display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
-lsLogo.style.cssText = ‘text-align:center;margin-bottom:10px’;
+lsLogo.innerHTML = ‘<img src="icon inicio.png" alt="Flokis" style="height:60px;max-width:190px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
+lsLogo.style.cssText = ‘text-align:center;margin-bottom:6px’;
 }
 });
 })();
@@ -7790,7 +7524,7 @@ var valMax  =parseFloat(getEl(‘cred-val-max’)?getEl(‘cred-val-max’).valu
 
 // Atualizar label para indicar competência
 var lblEl = getEl(‘cred-fat-lbl’);
-if(lblEl) lblEl.childNodes[0].textContent = ‘Contas a vencer (fatura ‘+MONTHS[selM]+’/’+selY+’) ’;
+if(lblEl && lblEl.childNodes[0]) lblEl.childNodes[0].textContent = ‘Contas a vencer (fatura ‘+MONTHS[selM]+’/’+selY+’) ’;
 
 // Contas a vencer: usar selM/selY para o vencimento
 var fatCredEl=getEl(‘fat-cred’);
