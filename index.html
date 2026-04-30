@@ -3168,10 +3168,10 @@ function fallbackCopy(txt) {
 
 // ═══ PATCH: ONBOARDING with nome + sobrenome ═══
 window.saveOnboard = function() {
-  var nome     = ((getEl('ob-nome') && getEl('ob-nome').value) || '').trim();
-  var sobre    = ((getEl('ob-sobrenome') && getEl('ob-sobrenome').value) || '').trim();
-  var senha    = (getEl('ob-senha') && getEl('ob-senha').value) || '';
-  var senha2   = (getEl('ob-senha2') && getEl('ob-senha2').value) || '';
+  var nome     = (getEl('ob-nome')?.value || '').trim();
+  var sobre    = (getEl('ob-sobrenome')?.value || '').trim();
+  var senha    = getEl('ob-senha')?.value || '';
+  var senha2   = getEl('ob-senha2')?.value || '';
   var nErr     = getEl('ob-nome-err');
   var sErr     = getEl('ob-senha-err');
   nErr.style.display = 'none';
@@ -3243,7 +3243,7 @@ window.saveCard = function() {
   var id      = getEl('card-edit-id').value;
   var bancoEl = getEl('card-banco');
   var banco   = bancoEl.value === 'outro' ? getEl('card-banco-custom').value.trim() : bancoEl.value;
-  var holder  = ((getEl('card-holder') && getEl('card-holder').value) || '').trim().toUpperCase();
+  var holder  = (getEl('card-holder')?.value || '').trim().toUpperCase();
   var nome    = getEl('card-nome').value.trim() || banco;
   var obj = {
     id:       id ? parseInt(id) : Date.now(),
@@ -3322,7 +3322,7 @@ window.saveBiz = function() {
   var id      = getEl('biz-edit-id').value;
   var nome    = getEl('biz-nome').value.trim();
   var emoji   = getEl('biz-emoji').value.trim() || '💼';
-  var foto    = (getEl('biz-foto') && getEl('biz-foto').value && getEl('biz-foto').value.trim()) || '';
+  var foto    = getEl('biz-foto')?.value?.trim() || '';
   if (!nome) { alert('Informe o nome do negócio.'); return; }
   var obj = {
     id:       id ? parseInt(id) : Date.now(),
@@ -5896,7 +5896,7 @@ function exportPDF(aba) {
 tableHTML+
 '<div class="titulo">Resumo</div>'+
 resumoHTML+
-'<script>window.onload=function(){window.print();}<\/script>'+
+'<script>setTimeout(function(){try{window.print();}catch(e){}},500);<\/script>'+
 ```
 
 ‘</body></html>’;
@@ -6220,7 +6220,7 @@ var bodyHTML=’<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin
 ‘<div class="periodo">’+tituloAba+’ · ‘+mesNome+’</div>’+
 ‘<div class="titulo">Lançamentos</div>’+tableHTML+
 ‘<div class="titulo">Resumo</div>’+resumoHTML+
-‘<script>window.onload=function(){window.print();}</script>’+
+‘<script>setTimeout(function(){try{window.print();}catch(e){}},500);</script>’+
 ‘</body></html>’;
 
 var win=window.open(’’,’_blank’);
@@ -7299,7 +7299,7 @@ var bodyHTML=’<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin
 ‘<div class="periodo">’+tituloAba+’ · ‘+mesNome+’</div>’+
 ‘<div class="titulo">Lançamentos</div>’+tableHTML+
 ‘<div class="titulo">Resumo</div>’+resumoHTML+
-‘<script>window.onload=function(){window.print();}</script>’+
+‘<script>setTimeout(function(){try{window.print();}catch(e){}},500);</script>’+
 ‘</body></html>’;
 var win=window.open(’’,’_blank’);
 if(!win){alert(‘Permita pop-ups para exportar PDF.’);return;}
@@ -7524,7 +7524,7 @@ var valMax  =parseFloat(getEl(‘cred-val-max’)?getEl(‘cred-val-max’).valu
 
 // Atualizar label para indicar competência
 var lblEl = getEl(‘cred-fat-lbl’);
-if(lblEl && lblEl.childNodes[0]) lblEl.childNodes[0].textContent = ‘Contas a vencer (fatura ‘+MONTHS[selM]+’/’+selY+’) ’;
+if(lblEl) lblEl.childNodes[0].textContent = ‘Contas a vencer (fatura ‘+MONTHS[selM]+’/’+selY+’) ’;
 
 // Contas a vencer: usar selM/selY para o vencimento
 var fatCredEl=getEl(‘fat-cred’);
