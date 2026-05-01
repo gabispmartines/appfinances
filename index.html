@@ -32,18 +32,18 @@
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
 
 /* SPLASH */
-#splash{position:fixed;inset:0;background:var(–bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease}
-.splash-bg{position:absolute;inset:0;overflow:hidden}
+#splash{position:fixed;inset:0;background:#000;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease}
+.splash-bg{position:absolute;inset:0;overflow:hidden;display:none}
 .splash-orb{position:absolute;border-radius:50%;filter:blur(55px);animation:orbF 3s ease-in-out infinite}
 .orb1{width:280px;height:280px;background:radial-gradient(circle,rgba(139,92,246,.5),transparent 70%);top:-70px;left:-70px}
 .orb2{width:240px;height:240px;background:radial-gradient(circle,rgba(236,72,153,.4),transparent 70%);bottom:-60px;right:-60px;animation-delay:.8s}
 .orb3{width:180px;height:180px;background:radial-gradient(circle,rgba(59,130,246,.3),transparent 70%);top:40%;left:35%;animation-delay:1.4s}
 @keyframes orbF{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8px,-10px) scale(1.06)}}
 .splash-c{position:relative;z-index:1;text-align:center}
-.splash-logo{font-family:‘Syne’,sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.splash-tag{font-size:12px;color:var(–text3);letter-spacing:3px;text-transform:uppercase;margin-top:8px}
-.splash-bar{width:56px;height:3px;background:var(–bg4);border-radius:2px;margin:30px auto 0;overflow:hidden}
-.splash-prog{height:3px;width:0;border-radius:2px;background:linear-gradient(90deg,#8b5cf6,#ec4899);animation:loadB 2s ease forwards}
+.splash-logo{font-family:‘Syne’,sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.splash-tag{font-size:11px;color:#666;letter-spacing:3px;text-transform:uppercase;margin-top:14px;font-weight:400}
+.splash-bar{width:48px;height:1.5px;background:#1c1c1c;border-radius:2px;margin:36px auto 0;overflow:hidden}
+.splash-prog{height:1.5px;width:0;border-radius:2px;background:#fff;animation:loadB 2s ease forwards}
 @keyframes loadB{to{width:100%}}
 
 /* APP */
@@ -342,40 +342,40 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 #import-file-input{display:none}
 
 /* ONBOARDING */
-#onboard{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;background:var(–bg);transition:opacity .5s ease}
+#onboard{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;background:#000;transition:opacity .5s ease}
 #onboard.hidden{opacity:0;pointer-events:none}
-.ob-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.ob-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;display:none}
 .ob-orb{position:absolute;border-radius:50%;filter:blur(60px)}
 .ob-orb1{width:300px;height:300px;background:radial-gradient(circle,rgba(139,92,246,.35),transparent 70%);top:-80px;left:-80px}
 .ob-orb2{width:250px;height:250px;background:radial-gradient(circle,rgba(236,72,153,.3),transparent 70%);bottom:-60px;right:-60px}
 .ob-content{position:relative;z-index:1;width:100%;max-width:360px;text-align:center}
-.ob-logo{font-family:‘Syne’,sans-serif;font-size:58px;font-weight:800;letter-spacing:-3px;background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
-.ob-tag{font-size:12px;color:var(–text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:36px}
-.ob-card{background:var(–bg3);border:.5px solid var(–border2);border-radius:var(–r);padding:24px 20px;text-align:left}
+.ob-logo{font-family:‘Syne’,sans-serif;font-size:58px;font-weight:800;letter-spacing:-3px;color:#fff;-webkit-text-fill-color:#fff;background:none;margin-bottom:16px;text-align:center}
+.ob-tag{font-size:11px;color:#666;letter-spacing:3px;text-transform:uppercase;margin-bottom:32px;font-weight:400}
+.ob-card{background:#111;border:1px solid #222;border-radius:var(–r);padding:24px 20px;text-align:left;box-shadow:none}
 .ob-step-lbl{font-family:‘Syne’,sans-serif;font-size:11px;color:var(–p2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .ob-title{font-family:‘Syne’,sans-serif;font-size:20px;font-weight:700;color:var(–text);margin-bottom:6px}
 .ob-sub{font-size:13px;color:var(–text2);margin-bottom:20px;line-height:1.6}
 .ob-frow{margin-bottom:14px}
 .ob-lbl{font-size:11px;color:var(–text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
-.ob-inp{width:100%;padding:14px 16px;background:var(–bg2);border:1px solid var(–border2);border-radius:var(–rs);color:var(–text);font-size:16px;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;transition:border-color .2s}
-.ob-inp:focus{border-color:var(–p1);box-shadow:0 0 0 3px rgba(139,92,246,.15)}
-.ob-btn{width:100%;padding:15px;border-radius:var(–rs);background:var(–g1);border:none;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-top:4px;transition:opacity .2s}
+.ob-inp{width:100%;padding:14px 16px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:var(–rs);color:#f0f0f0;font-size:16px;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;transition:border-color .2s}
+.ob-inp:focus{border-color:#444;box-shadow:none}
+.ob-btn{width:100%;padding:15px;border-radius:var(–rs);background:#fff;border:none;color:#000;font-size:15px;font-weight:700;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-top:4px;transition:opacity .2s;letter-spacing:0.2px}
 .ob-btn:active{opacity:.85}
 .ob-err{font-size:12px;color:var(–red);margin-top:-8px;margin-bottom:10px;display:none}
 /* LOGIN SCREEN */
-#loginscreen{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;background:var(–bg);transition:opacity .5s ease;gap:0}
+#loginscreen{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;background:#000;transition:opacity .5s ease;gap:0}
 #loginscreen.hidden{opacity:0;pointer-events:none}
 .ls-inner{width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center}
-.ls-logo{font-family:‘Syne’,sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;text-align:center}
-.ls-tag{font-size:11px;color:var(–text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:32px;text-align:center}
-.ls-welcome{font-size:16px;color:var(–text2);text-align:center;margin-bottom:24px;line-height:1.5}
-.ls-welcome b{color:#f1f0ff;font-weight:700}
-.ls-sobre{background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
-.ls-card{background:var(–bg3);border:.5px solid var(–border2);border-radius:var(–r);padding:24px 20px;width:100%}
-.ls-lbl{font-size:11px;color:var(–text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
-.ls-inp{width:100%;padding:14px 16px;background:var(–bg2);border:1.5px solid var(–border2);border-radius:var(–rs);color:var(–text);font-size:16px;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;transition:border-color .2s;margin-bottom:14px}
-.ls-inp:focus{border-color:var(–p1);box-shadow:0 0 0 3px rgba(139,92,246,.15)}
-.ls-btn{width:100%;padding:15px;border-radius:var(–rs);background:var(–g1);border:none;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:opacity .2s;box-shadow:0 4px 20px rgba(139,92,246,.35)}
+.ls-logo{font-family:‘Syne’,sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;color:#fff;-webkit-text-fill-color:#fff;background:none;margin-bottom:16px;text-align:center}
+.ls-tag{font-size:11px;color:#666;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;text-align:center;font-weight:400}
+.ls-welcome{font-size:15px;color:#888;text-align:center;margin-bottom:28px;line-height:1.6}
+.ls-welcome b{color:#f0f0f0;font-weight:600;-webkit-text-fill-color:#f0f0f0}
+.ls-sobre{color:#f0f0f0;-webkit-text-fill-color:#f0f0f0;background:none;font-weight:600}
+.ls-card{background:#111;border:1px solid #222;border-radius:var(–r);padding:24px 20px;width:100%;box-shadow:none}
+.ls-lbl{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.ls-inp{width:100%;padding:14px 16px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:var(–rs);color:#f0f0f0;font-size:16px;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;transition:border-color .2s;margin-bottom:14px}
+.ls-inp:focus{border-color:#444;box-shadow:none}
+.ls-btn{width:100%;padding:15px;border-radius:var(–rs);background:#fff;border:none;color:#000;font-size:15px;font-weight:700;cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:opacity .2s;letter-spacing:0.2px}
 .ls-btn:active{opacity:.85}
 .ls-err{font-size:12px;color:var(–red);margin-bottom:10px;display:none;text-align:center}
 
@@ -469,6 +469,12 @@ background-clip:text;display:inline-block
 }
 .hdr-greet{font-size:11px;color:var(–text2);margin-bottom:1px}
 
+/* ── V2: Login/Splash placeholder colour ── */
+.ls-inp::placeholder{color:#3a3a3a}
+.ob-inp::placeholder{color:#3a3a3a}
+.ls-inp::-webkit-input-placeholder{color:#3a3a3a}
+.ob-inp::-webkit-input-placeholder{color:#3a3a3a}
+
 </style>
 </head>
 <body>
@@ -514,7 +520,7 @@ background-clip:text;display:inline-block
   <div class="ls-inner">
     <div class="ls-logo">gabi.fin</div>
     <div class="ls-tag">controle financeiro pessoal</div>
-    <div class="ls-welcome" id="ls-welcome-txt">Bem-vinda de volta! 👋</div>
+    <div class="ls-welcome" id="ls-welcome-txt">Bem-vinda de volta.</div>
     <div class="ls-card">
       <div class="ls-lbl">Senha</div>
       <input class="ls-inp" id="ls-senha" type="password" placeholder="Digite sua senha" autocomplete="current-password">
@@ -2981,7 +2987,7 @@ function checkAuth() {
     ls.classList.remove('hidden');
     ls.style.opacity='1';
     var wt = getEl('ls-welcome-txt');
-    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>' + name + '</b>! 👋';
+    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>' + name + '</b>.';
     setTimeout(function(){ var si = getEl('ls-senha'); if(si) si.focus(); }, 300);
   }
   return false;
@@ -3229,8 +3235,7 @@ window.checkAuth = function() {
     ls.style.opacity='1';
     var wt = getEl('ls-welcome-txt');
     if (wt) {
-      wt.innerHTML = 'Bem-vinda de volta, <b>' + name + '</b>' +
-        (sobre ? ' <span style="background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700">' + sobre + '</span>' : '') + '! 👋';
+      wt.innerHTML = 'Bem-vinda de volta, <b>' + name + (sobre ? ' <b>' + sobre + '</b>' : '') + '.';
     }
     setTimeout(function(){ var si=getEl('ls-senha'); if(si) si.focus(); }, 300);
   }
@@ -4457,8 +4462,7 @@ window.checkAuth = function() {
   if (ls) {
     ls.classList.remove('hidden'); ls.style.opacity='1';
     var wt = getEl('ls-welcome-txt');
-    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>'+name+'</b>' +
-      (sobre ? ' <span class="ls-sobre">'+sobre+'</span>' : '') + '! 👋';
+    if (wt) wt.innerHTML = 'Bem-vinda de volta, <b>'+name+(sobre ? ' <b>'+sobre+'</b>' : '')+' .';
     setTimeout(function(){ var si=getEl('ls-senha'); if(si) si.focus(); }, 300);
   }
   return false;
@@ -5896,7 +5900,7 @@ function exportPDF(aba) {
 tableHTML+
 '<div class="titulo">Resumo</div>'+
 resumoHTML+
-'<script>setTimeout(function(){try{window.print();}catch(e){}},500);<\/script>'+
+'<script>window.onload=function(){window.print();}<\/script>'+
 ```
 
 ‘</body></html>’;
@@ -6220,7 +6224,7 @@ var bodyHTML=’<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin
 ‘<div class="periodo">’+tituloAba+’ · ‘+mesNome+’</div>’+
 ‘<div class="titulo">Lançamentos</div>’+tableHTML+
 ‘<div class="titulo">Resumo</div>’+resumoHTML+
-‘<script>setTimeout(function(){try{window.print();}catch(e){}},500);</script>’+
+‘<script>window.onload=function(){window.print();}</script>’+
 ‘</body></html>’;
 
 var win=window.open(’’,’_blank’);
@@ -7299,7 +7303,7 @@ var bodyHTML=’<!DOCTYPE html><html><head><meta charset="UTF-8"><title>gabi.fin
 ‘<div class="periodo">’+tituloAba+’ · ‘+mesNome+’</div>’+
 ‘<div class="titulo">Lançamentos</div>’+tableHTML+
 ‘<div class="titulo">Resumo</div>’+resumoHTML+
-‘<script>setTimeout(function(){try{window.print();}catch(e){}},500);</script>’+
+‘<script>window.onload=function(){window.print();}</script>’+
 ‘</body></html>’;
 var win=window.open(’’,’_blank’);
 if(!win){alert(‘Permita pop-ups para exportar PDF.’);return;}
@@ -7318,7 +7322,7 @@ setTimeout(function(){ buildBancoFilter(); buildCardFilter(); buildCatFilters();
 // ══════════════════════════════════════════════════════════════
 
 // ── AJUSTE 1: BRANDING — substituir “gabi.fin” por imagem logo em todas as telas visuais
-// A splash e telas usam imagem de arquivo local “icon inicio.png”
+// A splash e telas usam imagem de arquivo local “Icon inicio.png”
 // Aplicado via CSS e DOM patches abaixo.
 
 // Substituir splash-logo pelo logo imagem
@@ -7327,10 +7331,10 @@ var el = document.querySelector(’.splash-logo’);
 if (el) {
 el.innerHTML = ‘’;
 var img = document.createElement(‘img’);
-img.src = ‘icon inicio.png’;
+img.src = ‘Icon inicio.png’;
 img.alt = ‘Flokis’;
-img.style.cssText = ‘height:72px;max-width:220px;object-fit:contain;display:block;margin:0 auto’;
-img.onerror = function(){ el.textContent = ‘Flokis’; el.style.cssText=‘font-family:'Syne',sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;background:var(–g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text’; };
+img.style.cssText = ‘width:clamp(150px,44vw,195px);height:auto;max-height:160px;object-fit:contain;display:block;margin:0 auto’;
+img.onerror = function(){ el.textContent = ‘Flokis’; el.style.cssText=‘font-family:'Syne',sans-serif;font-size:52px;font-weight:800;letter-spacing:-3px;color:#fff’; };
 el.appendChild(img);
 }
 })();
@@ -7342,31 +7346,31 @@ document.addEventListener(‘DOMContentLoaded’, function() {
 var headers = document.querySelectorAll(’#tab-inicio .hdr div[style*=“font-size:32px”], #tab-inicio .hdr div[style*=“font-size: 32px”]’);
 headers.forEach(function(el) {
 if(el.textContent.trim() === ‘gabi.fin’) {
-el.innerHTML = ‘<img src="icon inicio.png" alt="Flokis" style="height:44px;max-width:160px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
+el.innerHTML = ‘<img src="Icon inicio.png" alt="Flokis" style="height:44px;max-width:160px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
 }
 });
 // Onboarding logo
 var obLogo = document.querySelector(’.ob-logo’);
 if (obLogo) {
-obLogo.innerHTML = ‘<img src="icon inicio.png" alt="Flokis" style="height:64px;max-width:200px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
-obLogo.style.cssText = ‘text-align:center;margin-bottom:6px’;
+obLogo.innerHTML = ‘<img src="Icon inicio.png" alt="Flokis" style="width:clamp(150px,44vw,190px);height:auto;max-height:150px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
+obLogo.style.cssText = ‘text-align:center;margin-bottom:16px’;
 }
 // Login screen logo
 var lsLogo = document.querySelector(’.ls-logo’);
 if (lsLogo) {
-lsLogo.innerHTML = ‘<img src="icon inicio.png" alt="Flokis" style="height:60px;max-width:190px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
-lsLogo.style.cssText = ‘text-align:center;margin-bottom:6px’;
+lsLogo.innerHTML = ‘<img src="Icon inicio.png" alt="Flokis" style="width:clamp(150px,44vw,195px);height:auto;max-height:155px;object-fit:contain;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.parentNode.textContent=\'Flokis\'">’;
+lsLogo.style.cssText = ‘text-align:center;margin-bottom:20px’;
 }
 });
 })();
 
-// Favicon usando Icon app.jpg.jpg
+// Favicon usando Icon app.jpg
 (function patchFavicon() {
 var link = document.querySelector(‘link[rel=“apple-touch-icon”]’);
-if (link) link.href = ‘Icon app.jpg.jpg’;
+if (link) link.href = ‘Icon app.jpg’;
 var favicon = document.createElement(‘link’);
 favicon.rel = ‘icon’;
-favicon.href = ‘Icon app.jpg.jpg’;
+favicon.href = ‘Icon app.jpg’;
 document.head.appendChild(favicon);
 // PWA title
 var titleEl = document.querySelector(‘title’);
